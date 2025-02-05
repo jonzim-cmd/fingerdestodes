@@ -28,7 +28,7 @@ header h1 {
     0 0 6px #ff073a,
     0 0 9px #ff073a,
     0 0 12px #ff073a,
-    0 0 15px #ff073a,
+    0 0 15px #ff073a;
   animation: neonPulse 0.8s ease-in-out infinite alternate;
 }
 
@@ -39,7 +39,7 @@ header h1 {
       0 0 10px #ff073a,
       0 0 20px #ff073a,
       0 0 30px #ff073a,
-      0 0 40px #ff073a,
+      0 0 40px #ff073a;
   }
   to {
     text-shadow: 
@@ -47,7 +47,7 @@ header h1 {
       0 0 20px #ff073a,
       0 0 30px #ff073a,
       0 0 40px #ff073a,
-      0 0 50px #ff073a,
+      0 0 50px #ff073a;
   }
 }
 
