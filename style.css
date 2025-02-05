@@ -26,7 +26,9 @@ header h1 {
   text-shadow: 
     0 0 3px #ff073a,
     0 0 6px #ff073a,
+    0 0 9px #ff073a,
     0 0 12px #ff073a,
+    0 0 15px #ff073a,
   animation: neonPulse 0.8s ease-in-out infinite alternate;
 }
 
@@ -36,12 +38,16 @@ header h1 {
       0 0 5px #ff073a,
       0 0 10px #ff073a,
       0 0 20px #ff073a,
+      0 0 30px #ff073a,
+      0 0 40px #ff073a,
   }
   to {
     text-shadow: 
-      0 0 5px #ff073a,
+      0 0 10px #ff073a,
       0 0 20px #ff073a,
       0 0 30px #ff073a,
+      0 0 40px #ff073a,
+      0 0 50px #ff073a,
   }
 }
 
@@ -249,7 +255,7 @@ header h1 {
 .group-box h3 {
   margin-top: 0;
   /* Dynamische Schriftgröße: Minimal 1em, ideal ca. 2vw, maximal 1.5em */
-  font-size: clamp(0.9em, 1.9vw, 1.4em);
+  font-size: clamp(0.7em, 1.6vw, 1.1em);
   color: #ddd;
   margin-bottom: 10px;
 }
@@ -264,7 +270,7 @@ header h1 {
 
 .group-box li {
   /* Dynamische Schriftgröße auch für die Einträge */
-  font-size: clamp(0.95em, 1.6vw, 1.1em);
+  font-size: clamp(1.0em, 2.0vw, 1.5em);
   color: #bbb;
   overflow: hidden;
   text-overflow: ellipsis;
