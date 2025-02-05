@@ -35,11 +35,11 @@ header h1 {
 @keyframes neonPulse {
   from {
     text-shadow: 
-      0 0 1px #ff073a,
-      0 0 2px #ff073a,
-      0 0 3px #ff073a,
-      0 0 4px #ff073a,
-      0 0 5px #ff073a;
+      0 0 1px #fc4e72,
+      0 0 2px #fc4e72,
+      0 0 3px #fc4e72,
+      0 0 4px #fc4e72,
+      0 0 5px #fc4e72;
   }
   to {
     text-shadow: 
