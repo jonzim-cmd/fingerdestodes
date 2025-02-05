@@ -1,1 +1,49 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schüler Auswahl &amp; Gruppeneinteilung</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+    <header>
+      <h1>Schüler Auswahl &amp; Gruppeneinteilung</h1>
+    </header>
+    
+    <section id="controls">
+      <div id="class-selector">
+        <label for="classDropdown">Klasse auswählen:</label>
+        <select id="classDropdown"></select>
+      </div>
+      <div id="actions">
+        <!-- Die Buttons werden als Bilder aus dem "images"-Ordner eingebunden -->
+        <img id="btn-random" class="action-button" src="images/random_student.png" alt="Zufälliger Schüler">
+        <img id="btn-group" class="action-button" src="images/group_assignment.png" alt="Gruppeneinteilung">
+      </div>
+    </section>
+    
+    <section id="student-list">
+      <!-- Hier wird die Schülerliste dynamisch mit Checkboxen angezeigt -->
+    </section>
+    
+    <section id="result-display">
+      <!-- Prominente Darstellung des ausgewählten Schülers -->
+      <div id="selected-student" class="hidden">
+        <h2>Gewählter Schüler</h2>
+        <div id="student-name"></div>
+        <img id="student-image" src="images/clown.jpg" alt="Lustiges Bild">
+      </div>
+      
+      <!-- Darstellung der Gruppeneinteilung -->
+      <div id="group-result" class="hidden">
+        <h2>Gruppeneinteilung</h2>
+        <div id="group-output"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="config.js"></script>
+</body>
+</html>
