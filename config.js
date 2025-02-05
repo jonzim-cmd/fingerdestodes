@@ -11,13 +11,15 @@ document.addEventListener('DOMContentLoaded', initApp);
 function initApp() {
   loadStudentData();
 
+  // Event-Listener für die beiden Hauptaktionsbuttons
   document.getElementById('btn-random').addEventListener('click', selectRandomStudent);
   document.getElementById('btn-group').addEventListener('click', groupAssignment);
 
+  // Event-Listener für den Anwesenheitseditor
   document.getElementById('toggle-attendance').addEventListener('click', toggleAttendanceDropdown);
   document.getElementById('close-attendance').addEventListener('click', toggleAttendanceDropdown);
 
-  // Schließen der Modals
+  // Event-Listener zum Schließen der Modals
   document.getElementById('close-selected').addEventListener('click', () => closeModal('modal-selected'));
   document.getElementById('close-group').addEventListener('click', () => closeModal('modal-group'));
 }
@@ -197,7 +199,12 @@ function groupAssignment() {
     groupNumber++;
   }
   
-  displayGroupResult(groups);
+  // Wenn Gruppen gefunden wurden, werden diese im Modal angezeigt
+  if (groups.length > 0) {
+    displayGroupResult(groups);
+  } else {
+    alert("Es konnten keine Gruppen gebildet werden.");
+  }
 }
 
 /* Zeigt die Gruppeneinteilung in einem Modal (Raster) an */
