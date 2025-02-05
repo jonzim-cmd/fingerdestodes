@@ -44,10 +44,10 @@ header h1 {
   to {
     text-shadow: 
       0 0 2px #ff073a,
-      0 0 3px #ff073a,
       0 0 4px #ff073a,
-      0 0 5px #ff073a,
-      0 0 6px #ff073a;
+      0 0 6px #ff073a,
+      0 0 8px #ff073a,
+      0 0 10px #ff073a;
   }
 }
 
