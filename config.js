@@ -99,7 +99,8 @@ function updateAttendanceList() {
 
     const label = document.createElement('label');
     label.htmlFor = `attend-${index}`;
-    label.textContent = student.name;
+    // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
+    label.textContent = (index + 1) + ". " + student.name;
 
     itemDiv.appendChild(checkbox);
     itemDiv.appendChild(label);
