@@ -54,7 +54,7 @@ header h1 {
 /* Controls (Klassenwahl und Anwesenheit) */
 #controls {
   margin-bottom: 20px;
-  position: relative; /* Für absolute Positionierung des Dropdowns */
+  position: relative;
 }
 
 #class-selector {
@@ -87,24 +87,20 @@ header h1 {
   background-color: #777;
 }
 
-/* Hochwertiges Dropdown für Anwesenheit bearbeiten als Overlay */
-/* Die feste Breite wurde entfernt und durch dynamische Breitenwerte ersetzt.
-   Damit passt sich das Dropdown an den Inhalt an.
-   Damit das Dropdown bei Vorhandensein der Klasse .hidden ausgeblendet bleibt,
-   definieren wir einen spezifischeren Selektor. */
+/* Dropdown für Anwesenheit: Wird relativ zum Wrapper positioniert */
 #attendance-dropdown {
   position: absolute;
-  top: 60px; /* Direkt unter dem Klassen-Dropdown */
-  left: 50%;
-  transform: translateX(-50%);
+  top: 100%;        /* Direkt unterhalb des Toggle-Buttons im Wrapper */
+  left: 0;          /* Linksbündig zum Wrapper */
+  margin-top: 5px;  /* Kleiner Abstand */
   background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border: 1px solid #555;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   border-radius: 8px;
   padding: 15px;
-  width: auto;           /* Breite wird durch den Inhalt bestimmt */
-  min-width: 200px;      /* Mindestbreite, falls der Inhalt sehr kurz ist */
-  max-width: 90%;        /* Maximale Breite, falls der Inhalt sehr lang ist */
+  width: auto;      /* Dynamische Breite */
+  min-width: 200px;
+  max-width: 90%;
   z-index: 10;
   text-align: left;
   max-height: 300px;
@@ -112,12 +108,12 @@ header h1 {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Spezifisch für das Dropdown: Wenn .hidden vorhanden ist, soll es ausgeblendet bleiben */
+/* Wenn das Dropdown ausgeblendet sein soll */
 #attendance-dropdown.hidden {
   display: none;
 }
 
-/* Die allgemeine .hidden-Klasse (für alle Elemente) */
+/* Allgemeine .hidden-Klasse */
 .hidden {
   display: none;
 }
@@ -153,7 +149,7 @@ header h1 {
 }
 
 .action-button {
-  width: 450px; /* Hier kann die Größe der Buttons angepasst werden */
+  width: 450px;
   height: 450px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -188,7 +184,6 @@ header h1 {
   border: 1px solid #444;
   border-radius: 8px;
   position: relative;
-  /* Für den Gruppen-Modal soll der Platz voll ausgeschöpft werden */
   width: 90%;
   height: 90%;
   overflow: hidden;
@@ -236,14 +231,13 @@ header h1 {
 /* Gruppeneinteilung Modal - Rasteransicht */
 .grid-container {
   display: grid;
-  /* Erzeugt ein flexibles Raster */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
   width: 100%;
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
-  overflow: auto;  /* Scrollbar, falls Inhalt zu groß */
+  overflow: auto;
 }
 
 /* Gruppen-Boxen */
@@ -262,7 +256,6 @@ header h1 {
 
 .group-box h3 {
   margin-top: 0;
-  /* Dynamische Schriftgröße: Minimal 1em, ideal ca. 2vw, maximal 1.5em */
   font-size: clamp(0.7em, 1.6vw, 1.1em);
   color: #ddd;
   margin-bottom: 10px;
@@ -277,7 +270,6 @@ header h1 {
 }
 
 .group-box li {
-  /* Dynamische Schriftgröße auch für die Einträge */
   font-size: clamp(1.0em, 2.0vw, 1.5em);
   color: #bbb;
   overflow: hidden;
@@ -288,7 +280,6 @@ header h1 {
 }
 
 /* Visuelles Feedback beim Drag & Drop */
-/* SortableJS fügt automatisch Klassen wie .sortable-chosen und .sortable-drag hinzu */
 .sortable-chosen {
   background-color: #444;
 }
