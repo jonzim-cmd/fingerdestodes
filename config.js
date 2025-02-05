@@ -99,9 +99,18 @@ function toggleAttendanceDropdown() {
   dropdown.classList.toggle('hidden');
 }
 
+/* Öffnet ein Modal anhand seiner ID */
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.style.display = 'flex';
+  modal.classList.remove('hidden');
+}
+
 /* Schließt ein Modal (durch ID) */
 function closeModal(modalId) {
-  document.getElementById(modalId).classList.add('hidden');
+  const modal = document.getElementById(modalId);
+  modal.style.display = 'none';
+  modal.classList.add('hidden');
 }
 
 /* Wählt einen zufälligen anwesenden Schüler und zeigt diesen in einem Modal an */
@@ -215,9 +224,4 @@ function displayGroupResult(groups) {
   });
   
   openModal('modal-group');
-}
-
-/* Öffnet ein Modal anhand seiner ID */
-function openModal(modalId) {
-  document.getElementById(modalId).classList.remove('hidden');
 }
