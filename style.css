@@ -142,8 +142,8 @@ header h1 {
 }
 
 .action-button {
-  width: 150px; /* Hier kann die Größe der Buttons angepasst werden */
-  height: 150px;
+  width: 450px; /* Hier kann die Größe der Buttons angepasst werden */
+  height: 450px;
   cursor: pointer;
   transition: transform 0.2s;
 }
