@@ -249,7 +249,7 @@ header h1 {
 .group-box h3 {
   margin-top: 0;
   /* Dynamische Schriftgröße: Minimal 1em, ideal ca. 2vw, maximal 1.5em */
-  font-size: clamp(1em, 2vw, 1.5em);
+  font-size: clamp(0.9em, 1.9vw, 1.4em);
   color: #ddd;
   margin-bottom: 10px;
 }
@@ -264,7 +264,7 @@ header h1 {
 
 .group-box li {
   /* Dynamische Schriftgröße auch für die Einträge */
-  font-size: clamp(0.85em, 1.5vw, 1em);
+  font-size: clamp(0.95em, 1.6vw, 1.1em);
   color: #bbb;
   overflow: hidden;
   text-overflow: ellipsis;
