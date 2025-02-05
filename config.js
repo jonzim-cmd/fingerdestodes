@@ -22,6 +22,18 @@ function initApp() {
   // Event-Listener zum Schließen der Modals
   document.getElementById('close-selected').addEventListener('click', () => closeModal('modal-selected'));
   document.getElementById('close-group').addEventListener('click', () => closeModal('modal-group'));
+
+  // Globaler Klick-Listener: Schließt das Dropdown, wenn außerhalb geklickt wird
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('attendance-dropdown');
+    const toggleButton = document.getElementById('toggle-attendance');
+    // Falls das Dropdown sichtbar ist und der Klick weder im Dropdown noch auf dem Toggle-Button stattfand:
+    if (!dropdown.classList.contains('hidden') &&
+        !dropdown.contains(event.target) &&
+        !toggleButton.contains(event.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
 }
 
 /* Lädt die Schülerdaten aus data.json */
@@ -96,7 +108,9 @@ function updateAttendanceList() {
 }
 
 /* Toggle für Anwesenheits-Dropdown */
-function toggleAttendanceDropdown() {
+function toggleAttendanceDropdown(event) {
+  // Das Event nicht weiterleiten, damit der globale Klick-Listener nicht sofort das Dropdown schließt
+  event.stopPropagation();
   const dropdown = document.getElementById('attendance-dropdown');
   dropdown.classList.toggle('hidden');
 }
