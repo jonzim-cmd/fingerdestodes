@@ -225,9 +225,15 @@ header h1 {
 /* Gruppeneinteilung Modal - Rasteransicht */
 .grid-container {
   display: grid;
-  /* Es werden so viele Spalten wie möglich erstellt, wobei jede Kachel mindestens 200px breit sein soll */
+  /* Begrenze den Container, sodass nicht zu viele Spalten erzeugt werden.
+     Hier wird der Container auf maximal 600px Breite gesetzt, was in der Regel
+     für ein nahezu quadratisches Raster sorgt */
+  max-width: 600px;
+  margin: 0 auto;
+  /* Ziel: möglichst gleiche Anzahl Spalten wie Zeilen; 
+     Wir erzwingen hier, dass jede Kachel mindestens 200px breit ist.
+     Liegt der Platzbedarf über 600px, entsteht automatisch ein Umbruch in mehr Zeilen. */
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
   gap: 10px;
   width: 100%;
   height: 100%;
@@ -235,6 +241,7 @@ header h1 {
   box-sizing: border-box;
 }
 
+/* Dynamische Skalierung der Schrift in den Kacheln */
 .group-box {
   background-color: #333;
   border: 1px solid #444;
@@ -251,7 +258,9 @@ header h1 {
 
 .group-box h3 {
   margin-top: 0;
-  font-size: 1.2em;
+  /* Mit clamp() wird die Schriftgröße dynamisch angepasst;
+     Minimum 1em, ideal ca. 2vw, maximal 1.5em */
+  font-size: clamp(1em, 2vw, 1.5em);
   color: #ddd;
   margin-bottom: 10px;
 }
@@ -265,7 +274,8 @@ header h1 {
 }
 
 .group-box li {
-  font-size: 1em;
+  /* Auch hier wird die Schriftgröße mittels clamp() dynamisch angepasst */
+  font-size: clamp(0.85em, 1.5vw, 1em);
   color: #bbb;
   overflow: hidden;
   text-overflow: ellipsis;
