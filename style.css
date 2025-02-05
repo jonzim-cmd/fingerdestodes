@@ -142,8 +142,8 @@ header h1 {
 }
 
 .action-button {
-  width: 500px; /* Hier kann die Größe der Buttons angepasst werden */
-  height: 500px;
+  width: 150px; /* Hier kann die Größe der Buttons angepasst werden */
+  height: 150px;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -225,30 +225,26 @@ header h1 {
 /* Gruppeneinteilung Modal - Rasteransicht */
 .grid-container {
   display: grid;
-  /* Begrenze den Container, sodass nicht zu viele Spalten erzeugt werden.
-     Hier wird der Container auf maximal 600px Breite gesetzt, was in der Regel
-     für ein nahezu quadratisches Raster sorgt */
-  max-width: 600px;
-  margin: 0 auto;
-  /* Ziel: möglichst gleiche Anzahl Spalten wie Zeilen; 
-     Wir erzwingen hier, dass jede Kachel mindestens 200px breit ist.
-     Liegt der Platzbedarf über 600px, entsteht automatisch ein Umbruch in mehr Zeilen. */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* Versuche, ein nahezu quadratisches Raster zu erzeugen.
+     Wir verwenden hier auto-fit mit einer Mindestbreite von 150px pro Kachel.
+     Falls zu viele Kacheln vorhanden sind, passt sich der Container mit Scrollbars an. */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
   width: 100%;
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
+  overflow: auto;  /* Falls der Inhalt zu groß wird, erscheint eine Scrollleiste */
 }
 
-/* Dynamische Skalierung der Schrift in den Kacheln */
+/* Die Kacheln passen sich dynamisch an:
+   Wir nutzen flexibles Layout in der group-box und dynamische Schriftgrößen */
 .group-box {
   background-color: #333;
   border: 1px solid #444;
   border-radius: 6px;
   padding: 10px;
   text-align: center;
-  /* Flexbox-Zentrierung, damit der Inhalt immer optimal dargestellt wird */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -258,8 +254,7 @@ header h1 {
 
 .group-box h3 {
   margin-top: 0;
-  /* Mit clamp() wird die Schriftgröße dynamisch angepasst;
-     Minimum 1em, ideal ca. 2vw, maximal 1.5em */
+  /* Dynamische Schriftgröße: Minimal 1em, ideal ca. 2vw, maximal 1.5em */
   font-size: clamp(1em, 2vw, 1.5em);
   color: #ddd;
   margin-bottom: 10px;
@@ -274,7 +269,7 @@ header h1 {
 }
 
 .group-box li {
-  /* Auch hier wird die Schriftgröße mittels clamp() dynamisch angepasst */
+  /* Dynamische Schriftgröße auch für die Einträge */
   font-size: clamp(0.85em, 1.5vw, 1em);
   color: #bbb;
   overflow: hidden;
