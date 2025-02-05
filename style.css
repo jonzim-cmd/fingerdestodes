@@ -54,7 +54,7 @@ header h1 {
 /* Controls (Klassenwahl und Anwesenheit) */
 #controls {
   margin-bottom: 20px;
-  position: relative; /* Hier könnte man später weitere Elemente positionieren */
+  position: relative; /* Für absolute Positionierung des Dropdowns */
 }
 
 #class-selector {
@@ -88,14 +88,15 @@ header h1 {
 }
 
 /* Hochwertiges Dropdown für Anwesenheit bearbeiten als Overlay */
-/* Hier wurde die feste horizontale Zentrierung entfernt und durch
-   eine linksbündige Positionierung ersetzt. Dadurch öffnet sich das Dropdown
-   hauptsächlich nach unten – ähnlich wie das Klassen-Dropdown. */
+/* Die feste Breite wurde entfernt und durch dynamische Breitenwerte ersetzt.
+   Damit passt sich das Dropdown an den Inhalt an.
+   Damit das Dropdown bei Vorhandensein der Klasse .hidden ausgeblendet bleibt,
+   definieren wir einen spezifischeren Selektor. */
 #attendance-dropdown {
   position: absolute;
-  top: 60px;             /* Öffnet sich 60px vom oberen Seitenrand – Anpassung möglich */
-  left: 10px;            /* Linksbündig ausgerichtet; ggf. an den Toggle-Button anpassen */
-  transform: none;       /* Entferne die bisherige horizontale Zentrierung */
+  top: 60px; /* Direkt unter dem Klassen-Dropdown */
+  left: 50%;
+  transform: translateX(-50%);
   background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border: 1px solid #555;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -111,12 +112,12 @@ header h1 {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Damit das Dropdown bei Vorhandensein der Klasse .hidden ausgeblendet bleibt */
+/* Spezifisch für das Dropdown: Wenn .hidden vorhanden ist, soll es ausgeblendet bleiben */
 #attendance-dropdown.hidden {
   display: none;
 }
 
-/* Allgemeine .hidden-Klasse */
+/* Die allgemeine .hidden-Klasse (für alle Elemente) */
 .hidden {
   display: none;
 }
