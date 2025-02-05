@@ -222,19 +222,46 @@ function groupAssignment() {
   }
 }
 
-/* Zeigt die Gruppeneinteilung in einem Modal (Raster) an */
+/* Aktualisiert die Überschrift einer Gruppen-Box anhand der aktuellen Anzahl der Listeneinträge */
+function updateGroupHeader(ulElement) {
+  let groupBox = ulElement.closest('.group-box');
+  if (!groupBox) return;
+  // Aus dem data-Attribut wird die Gruppen-Nummer ausgelesen
+  let groupNumber = groupBox.getAttribute('data-group-number');
+  let count = ulElement.children.length;
+  let header = groupBox.querySelector('h3');
+  header.textContent = "Gruppe " + groupNumber + " (" + count + "er)";
+  // Optional: auch das data-group-name Attribut aktualisieren
+  groupBox.setAttribute('data-group-name', header.textContent);
+}
+
+/* Zeigt die Gruppeneinteilung in einem Modal (Raster) an und initialisiert Drag & Drop */
 function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
   groupOutput.innerHTML = ''; // Vorherige Ergebnisse löschen
   
   groups.forEach(group => {
+    // Erstelle eine Gruppen-Box für jede Gruppe
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-box';
     
+    // Extrahiere die Gruppen-Nummer aus dem Gruppennamen (z.B. "Gruppe 5 (3er)")
+    // Alternativ kann man hier auch eine fortlaufende Nummer verwenden.
+    const regex = /^Gruppe\s+(\d+)/i;
+    const match = group.groupName.match(regex);
+    let groupNumber = match ? match[1] : "";
+    // Speichere die Gruppen-Nummer als Datenattribut
+    groupDiv.setAttribute('data-group-number', groupNumber);
+    
+    // Setze initial den Gruppennamen mit der Ausgangsgröße (Länge des Arrays)
+    const initialSize = group.students.length;
+    groupDiv.setAttribute('data-group-name', `Gruppe ${groupNumber} (${initialSize}er)`);
+    
     const groupTitle = document.createElement('h3');
-    groupTitle.textContent = group.groupName;
+    groupTitle.textContent = `Gruppe ${groupNumber} (${initialSize}er)`;
     groupDiv.appendChild(groupTitle);
     
+    // Erstelle eine Liste, in der die Schülernamen als Listeneinträge angezeigt werden
     const ul = document.createElement('ul');
     group.students.forEach(studentName => {
       const li = document.createElement('li');
@@ -245,5 +272,55 @@ function displayGroupResult(groups) {
     groupOutput.appendChild(groupDiv);
   });
   
+  // Öffne das Modal, nachdem der Inhalt erzeugt wurde
   openModal('modal-group');
+  
+  // Initialisiere SortableJS für alle Listen in den Gruppen-Boxen
+  // Dadurch können die Listeneinträge (Schülernamen) per Drag & Drop verschoben werden.
+  document.querySelectorAll('.group-box ul').forEach(ul => {
+    new Sortable(ul, {
+      group: 'shared', // Erlaubt das Verschieben zwischen den Listen
+      animation: 150,  // Animationsdauer in ms
+      // Event-Listener, der nach jedem Drop (onEnd) ausgeführt wird
+      onEnd: function(evt) {
+        // Ermittle den übergeordneten Container (group-box) der Ziel-Liste
+        let targetGroupDiv = evt.to.closest('.group-box');
+        let targetGroupName = targetGroupDiv.getAttribute('data-group-name');
+
+        // Aktualisiere das Datenmodell für alle Schüler in der Zielgruppe
+        Array.from(evt.to.children).forEach(li => {
+          let sName = li.textContent;
+          let studentObj = studentData[currentClass].find(s => s.name === sName);
+          if (studentObj) {
+            studentObj.group = targetGroupName;
+          }
+        });
+
+        // Falls der Schüler aus einer anderen Gruppe verschoben wurde,
+        // aktualisiere auch das Datenmodell der Quellgruppe.
+        let sourceGroupDiv = evt.from.closest('.group-box');
+        if (sourceGroupDiv) {
+          let sourceGroupName = sourceGroupDiv.getAttribute('data-group-name');
+          Array.from(evt.from.children).forEach(li => {
+            let sName = li.textContent;
+            let studentObj = studentData[currentClass].find(s => s.name === sName);
+            if (studentObj) {
+              studentObj.group = sourceGroupName;
+            }
+          });
+        }
+        
+        // Aktualisiere die Überschriften der betroffenen Gruppen-Boxen, 
+        // damit sie die aktuelle Anzahl der Schüler widerspiegeln.
+        updateGroupHeader(evt.from);
+        // Falls evt.to und evt.from unterschiedlich sind, aktualisiere auch evt.to
+        if (evt.to !== evt.from) {
+          updateGroupHeader(evt.to);
+        }
+        
+        // Debug: Zeige die aktuelle Gruppenzuordnung in der Konsole
+        console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
+      }
+    });
+  });
 }
