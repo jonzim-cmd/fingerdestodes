@@ -1,11 +1,11 @@
 /* config.js */
 
-/* Globales Objekt, in dem die Schülerdaten gehalten werden.
-   Struktur: { "Klasse A": [{name: "Anna", present: true}, …], … } */
+/* Globales Objekt für die Schülerdaten:
+   Struktur: { "Klasse A": [{name: "Anna", present: true}, ...], ... } */
 let studentData = {};
 let currentClass = "";
 
-/* Initialisierung, wenn das DOM vollständig geladen ist */
+/* Initialisierung, wenn das DOM geladen wurde */
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
@@ -13,27 +13,33 @@ function initApp() {
 
   document.getElementById('btn-random').addEventListener('click', selectRandomStudent);
   document.getElementById('btn-group').addEventListener('click', groupAssignment);
-  document.getElementById('classDropdown').addEventListener('change', onClassChange);
+
+  document.getElementById('toggle-attendance').addEventListener('click', toggleAttendanceDropdown);
+  document.getElementById('close-attendance').addEventListener('click', toggleAttendanceDropdown);
+
+  // Schließen der Modals
+  document.getElementById('close-selected').addEventListener('click', () => closeModal('modal-selected'));
+  document.getElementById('close-group').addEventListener('click', () => closeModal('modal-group'));
 }
 
-/* Lädt die Schülerdaten aus der separaten JSON-Datei */
+/* Lädt die Schülerdaten aus data.json */
 function loadStudentData() {
   fetch('data.json')
     .then(response => response.json())
     .then(data => {
       studentData = {};
-      // Umwandeln der reinen Namen in Objekte mit default „present: true“
+      // Konvertiere reine Namen in Objekte (mit default present: true)
       for (let klasse in data) {
         studentData[klasse] = data[klasse].map(name => ({ name: name, present: true }));
       }
       populateClassDropdown();
     })
     .catch(error => {
-      console.error("Error loading student data:", error);
+      console.error("Fehler beim Laden der Schülerdaten:", error);
     });
 }
 
-/* Befüllt das Dropdown mit den vorhandenen Klassen */
+/* Befüllt das Dropdown mit Klassen */
 function populateClassDropdown() {
   const dropdown = document.getElementById('classDropdown');
   dropdown.innerHTML = '';
@@ -48,58 +54,58 @@ function populateClassDropdown() {
   // Standardmäßig die erste Klasse auswählen
   if (dropdown.options.length > 0) {
     currentClass = dropdown.options[0].value;
-    displayStudentList();
+    updateAttendanceList();
   }
 }
 
-/* Event-Handler für den Klassenwechsel */
-function onClassChange(event) {
+/* Beim Klassenwechsel */
+document.getElementById('classDropdown').addEventListener('change', function(event) {
   currentClass = event.target.value;
-  displayStudentList();
-}
+  updateAttendanceList();
+});
 
-/* Zeigt die Schülerliste der aktuellen Klasse mit Checkboxen an */
-function displayStudentList() {
-  const listContainer = document.getElementById('student-list');
-  listContainer.innerHTML = ''; // Vorherige Liste löschen
+/* Aktualisiert den Inhalt des Anwesenheits-Dropdowns */
+function updateAttendanceList() {
+  const attendanceList = document.getElementById('attendance-list');
+  attendanceList.innerHTML = '';
+
   if (!studentData[currentClass]) return;
 
   studentData[currentClass].forEach((student, index) => {
     const itemDiv = document.createElement('div');
-    itemDiv.className = 'student-item';
+    itemDiv.className = 'attendance-item';
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = `student-${index}`;
-    // Aktualisiert das zugrundeliegende Objekt direkt
+    checkbox.id = `attend-${index}`;
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = `student-${index}`;
+    label.htmlFor = `attend-${index}`;
     label.textContent = student.name;
 
     itemDiv.appendChild(checkbox);
     itemDiv.appendChild(label);
-    listContainer.appendChild(itemDiv);
+    attendanceList.appendChild(itemDiv);
   });
-
-  hideResultDisplays();
 }
 
-/* Blendet alle Ergebnisbereiche aus */
-function hideResultDisplays() {
-  document.getElementById('selected-student').classList.remove('visible');
-  document.getElementById('selected-student').classList.add('hidden');
-  document.getElementById('group-result').classList.remove('visible');
-  document.getElementById('group-result').classList.add('hidden');
+/* Toggle für Anwesenheits-Dropdown */
+function toggleAttendanceDropdown() {
+  const dropdown = document.getElementById('attendance-dropdown');
+  dropdown.classList.toggle('hidden');
 }
 
-/* Wählt einen zufälligen anwesenden Schüler aus und zeigt diesen prominent an */
+/* Schließt ein Modal (durch ID) */
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden');
+}
+
+/* Wählt einen zufälligen anwesenden Schüler und zeigt diesen in einem Modal an */
 function selectRandomStudent() {
-  hideResultDisplays();
   if (!studentData[currentClass]) return;
 
   const presentStudents = studentData[currentClass].filter(s => s.present);
@@ -111,22 +117,16 @@ function selectRandomStudent() {
   const randomIndex = Math.floor(Math.random() * presentStudents.length);
   const selected = presentStudents[randomIndex];
 
-  // Anzeige des ausgewählten Schülers mit Animation
-  const selectedContainer = document.getElementById('selected-student');
   document.getElementById('student-name').textContent = selected.name;
-  
-  selectedContainer.classList.remove('hidden');
-  // Reflow erzwingen, um die Animation bei jedem Klick neu zu starten
-  void selectedContainer.offsetWidth;
-  selectedContainer.classList.add('visible');
+
+  openModal('modal-selected');
 }
 
-/* Gruppeneinteilung basierend auf den Anwesenheitsdaten */
+/* Gruppeneinteilung basierend auf Anwesenheit */
 function groupAssignment() {
-  hideResultDisplays();
   if (!studentData[currentClass]) return;
   
-  // Erstellen eines Arrays mit den Namen der anwesenden Schüler
+  // Array der anwesenden Schülernamen
   const presentStudents = studentData[currentClass].filter(s => s.present).map(s => s.name);
   const anzahlAnwesend = presentStudents.length;
   
@@ -135,7 +135,6 @@ function groupAssignment() {
     return;
   }
   
-  // Gruppengrößen abfragen
   let gruppenGroesse1 = parseInt(prompt("Primäre Gruppengröße (z.B. 3):", "3"), 10);
   if (isNaN(gruppenGroesse1) || gruppenGroesse1 <= 0 || gruppenGroesse1 > anzahlAnwesend) {
     alert("Ungültige primäre Gruppengröße!");
@@ -148,18 +147,16 @@ function groupAssignment() {
     return;
   }
   
-  // Mischen der anwesenden Schüler (Fisher-Yates)
+  // Mischen (Fisher-Yates)
   const shuffled = presentStudents.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   
-  // Gruppeneinteilungslogik (angelehnt an den VBA-Code)
   let anzahlGruppen1 = Math.floor(anzahlAnwesend / gruppenGroesse1);
   let restSchueler = anzahlAnwesend % gruppenGroesse1;
   
-  // Optimierung: Reduziere primäre Gruppen, bis der Rest in sekundäre Gruppen passt
   while (restSchueler > 0 && (restSchueler % gruppenGroesse2 !== 0) && anzahlGruppen1 > 0) {
     anzahlGruppen1--;
     restSchueler += gruppenGroesse1;
@@ -171,8 +168,6 @@ function groupAssignment() {
   }
   
   const anzahlGruppen2 = restSchueler / gruppenGroesse2;
-  
-  // Aufbau der Gruppen
   const groups = [];
   let groupNumber = 1;
   let index = 0;
@@ -193,17 +188,17 @@ function groupAssignment() {
     groupNumber++;
   }
   
-  displayGroupResult(groups, anzahlAnwesend, gruppenGroesse1, anzahlGruppen1, gruppenGroesse2, anzahlGruppen2);
+  displayGroupResult(groups);
 }
 
-/* Zeigt das Ergebnis der Gruppeneinteilung an */
-function displayGroupResult(groups, anzahlAnwesend, gruppenGroesse1, anzahlGruppen1, gruppenGroesse2, anzahlGruppen2) {
+/* Zeigt die Gruppeneinteilung in einem Modal (Raster) an */
+function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
   groupOutput.innerHTML = ''; // Vorherige Ergebnisse löschen
   
   groups.forEach(group => {
     const groupDiv = document.createElement('div');
-    groupDiv.className = 'group';
+    groupDiv.className = 'group-box';
     
     const groupTitle = document.createElement('h3');
     groupTitle.textContent = group.groupName;
@@ -219,14 +214,10 @@ function displayGroupResult(groups, anzahlAnwesend, gruppenGroesse1, anzahlGrupp
     groupOutput.appendChild(groupDiv);
   });
   
-  const resultContainer = document.getElementById('group-result');
-  resultContainer.classList.remove('hidden');
-  // Reflow auslösen, um die Animation neu zu starten
-  void resultContainer.offsetWidth;
-  resultContainer.classList.add('visible');
-  
-  // Log-Ausgabe (optional)
-  console.log(`Anwesend: ${anzahlAnwesend}`);
-  console.log(`${gruppenGroesse1}er-Gruppen: ${anzahlGruppen1}`);
-  console.log(`${gruppenGroesse2}er-Gruppen: ${anzahlGruppen2}`);
+  openModal('modal-group');
+}
+
+/* Öffnet ein Modal anhand seiner ID */
+function openModal(modalId) {
+  document.getElementById(modalId).classList.remove('hidden');
 }
