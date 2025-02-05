@@ -105,8 +105,8 @@ h1, h2, h3 {
 }
 
 .action-button {
-  width: 150px;
-  height: 150px;
+  width: 500px;
+  height: 500px;
   cursor: pointer;
   transition: transform 0.2s;
 }
