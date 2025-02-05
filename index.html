@@ -3,45 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Schüler Auswahl &amp; Gruppeneinteilung</title>
+  <title>Schüler Auswahl & Gruppeneinteilung</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app-container">
     <header>
-      <h1>Schüler Auswahl &amp; Gruppeneinteilung</h1>
+      <h1>Schüler Auswahl & Gruppeneinteilung</h1>
     </header>
-    
+
+    <!-- Klassenwahl und Anwesenheitseditor -->
     <section id="controls">
       <div id="class-selector">
         <label for="classDropdown">Klasse auswählen:</label>
         <select id="classDropdown"></select>
+        <button id="toggle-attendance" class="small-btn">Anwesenheit bearbeiten</button>
       </div>
+    </section>
+
+    <!-- Dropdown für Anwesenheitsbearbeitung (initial versteckt) -->
+    <div id="attendance-dropdown" class="dropdown hidden">
+      <h3>Anwesenheit bearbeiten</h3>
+      <div id="attendance-list">
+        <!-- Hier wird die Liste der Schüler mit Checkboxen dynamisch eingefügt -->
+      </div>
+      <button id="close-attendance" class="small-btn">Schließen</button>
+    </div>
+
+    <!-- Zentrale Aktionstasten -->
+    <section id="main-actions">
       <div id="actions">
-        <!-- Die Buttons werden als Bilder aus dem "images"-Ordner eingebunden -->
-        <img id="btn-random" class="action-button" src="images/random_student.png" alt="Zufälliger Schüler">
-        <img id="btn-group" class="action-button" src="images/group_assignment.png" alt="Gruppeneinteilung">
+        <div class="action-button-container">
+          <img id="btn-random" class="action-button" src="images/random_student.png" alt="Zufallsschüler">
+          <div class="button-caption">Zufallsschüler</div>
+        </div>
+        <div class="action-button-container">
+          <img id="btn-group" class="action-button" src="images/group_assignment.png" alt="Gruppeneinteilung">
+          <div class="button-caption">Gruppeneinteilung</div>
+        </div>
       </div>
     </section>
-    
-    <section id="student-list">
-      <!-- Hier wird die Schülerliste dynamisch mit Checkboxen angezeigt -->
-    </section>
-    
-    <section id="result-display">
-      <!-- Prominente Darstellung des ausgewählten Schülers -->
-      <div id="selected-student" class="hidden">
-        <h2>Gewählter Schüler</h2>
-        <div id="student-name"></div>
-        <img id="student-image" src="images/clown.jpg" alt="Lustiges Bild">
+
+    <!-- Modal für ausgewählten Schüler -->
+    <div id="modal-selected" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" id="close-selected">&times;</span>
+        <div id="selected-student">
+          <h2>Gewählter Schüler</h2>
+          <div id="student-name"></div>
+          <img id="student-image" src="images/clown.jpg" alt="Lustiges Bild">
+        </div>
       </div>
-      
-      <!-- Darstellung der Gruppeneinteilung -->
-      <div id="group-result" class="hidden">
-        <h2>Gruppeneinteilung</h2>
-        <div id="group-output"></div>
+    </div>
+
+    <!-- Modal für Gruppeneinteilung (Rasteransicht) -->
+    <div id="modal-group" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" id="close-group">&times;</span>
+        <div id="group-result">
+          <h2>Gruppeneinteilung</h2>
+          <div id="group-output" class="grid-container">
+            <!-- Gruppenergebnisse werden als Raster-Boxen hier angezeigt -->
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+
   </div>
   
   <script src="config.js"></script>
