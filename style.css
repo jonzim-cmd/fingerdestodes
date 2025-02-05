@@ -24,30 +24,30 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 4px;
   text-shadow: 
-    0 0 3px #ff073a,
-    0 0 6px #ff073a,
-    0 0 9px #ff073a,
-    0 0 12px #ff073a,
-    0 0 15px #ff073a;
+    0 0 3px #fc6d8a,
+    0 0 6px #fc6d8a,
+    0 0 9px #fc6d8a,
+    0 0 12px #fc6d8a,
+    0 0 15px #fc6d8a;
   animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes neonPulse {
   from {
     text-shadow: 
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a;
+      0 0 1px #ff073a,
+      0 0 2px #ff073a,
+      0 0 3px #ff073a,
+      0 0 4px #ff073a,
+      0 0 5px #ff073a;
   }
   to {
     text-shadow: 
-      0 0 10px #ff073a,
-      0 0 20px #ff073a,
-      0 0 30px #ff073a,
-      0 0 40px #ff073a,
-      0 0 50px #ff073a;
+      0 0 2px #ff073a,
+      0 0 3px #ff073a,
+      0 0 4px #ff073a,
+      0 0 5px #ff073a,
+      0 0 6px #ff073a;
   }
 }
 
