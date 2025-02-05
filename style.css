@@ -1,0 +1,135 @@
+/* Allgemeine Body-Styles im Dark Mode */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+#app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1, h2 {
+  color: #ffffff;
+}
+
+/* Steuerungsbereich */
+#controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+#class-selector {
+  margin-bottom: 10px;
+}
+
+#classDropdown {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
+
+/* Button-Bilder */
+#actions {
+  display: flex;
+  gap: 20px;
+}
+
+.action-button {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+}
+
+/* Schülerliste */
+#student-list {
+  margin-bottom: 20px;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #333;
+}
+
+.student-item label {
+  margin-left: 10px;
+}
+
+/* Ergebnisanzeige */
+#result-display {
+  text-align: center;
+}
+
+#selected-student,
+#group-result {
+  border: 2px solid #555;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #2a2a2a;
+  display: inline-block;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#selected-student.visible,
+#group-result.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#student-name {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #ffa500;
+}
+
+#student-image {
+  width: 200px;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+/* Gruppenausgabe (als Boxen) */
+#group-output {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.group {
+  margin-bottom: 15px;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.group h3 {
+  margin-top: 0;
+}
+
+/* Utility-Klassen */
+.hidden {
+  display: none;
+}
