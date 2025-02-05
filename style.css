@@ -225,20 +225,17 @@ header h1 {
 /* Gruppeneinteilung Modal - Rasteransicht */
 .grid-container {
   display: grid;
-  /* Versuche, ein nahezu quadratisches Raster zu erzeugen.
-     Wir verwenden hier auto-fit mit einer Mindestbreite von 150px pro Kachel.
-     Falls zu viele Kacheln vorhanden sind, passt sich der Container mit Scrollbars an. */
+  /* Erzeugt ein flexibles Raster */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
   width: 100%;
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
-  overflow: auto;  /* Falls der Inhalt zu groß wird, erscheint eine Scrollleiste */
+  overflow: auto;  /* Scrollbar, falls Inhalt zu groß */
 }
 
-/* Die Kacheln passen sich dynamisch an:
-   Wir nutzen flexibles Layout in der group-box und dynamische Schriftgrößen */
+/* Gruppen-Boxen */
 .group-box {
   background-color: #333;
   border: 1px solid #444;
@@ -275,4 +272,15 @@ header h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 4px;
+  cursor: pointer;
+}
+
+/* Visuelles Feedback beim Drag & Drop */
+/* SortableJS fügt automatisch Klassen wie .sortable-chosen und .sortable-drag hinzu */
+.sortable-chosen {
+  background-color: #444;
+}
+.sortable-drag {
+  opacity: 0.8;
 }
