@@ -4,6 +4,8 @@
    Struktur: { "Klasse A": [{name: "Anna", present: true}, ...], ... } */
 let studentData = {};
 let currentClass = "";
+// Globale Variable für die Popper-Instanz des Anwesenheits-Dropdowns
+let attendancePopper = null;
 
 /* Initialisierung, wenn das DOM geladen wurde */
 document.addEventListener('DOMContentLoaded', initApp);
@@ -32,6 +34,11 @@ function initApp() {
         !dropdown.contains(event.target) &&
         !toggleButton.contains(event.target)) {
       dropdown.classList.add('hidden');
+      // Falls eine Popper-Instanz existiert, zerstören
+      if (attendancePopper) {
+        attendancePopper.destroy();
+        attendancePopper = null;
+      }
     }
   });
 }
@@ -108,12 +115,38 @@ function updateAttendanceList() {
   });
 }
 
-/* Toggle für Anwesenheits-Dropdown */
+/* Toggle für Anwesenheits-Dropdown mit Popper.js-Integration */
 function toggleAttendanceDropdown(event) {
-  // Das Event nicht weiterleiten, damit der globale Klick-Listener nicht sofort das Dropdown schließt
+  // Verhindere, dass das Event weitergereicht wird (z.B. an den globalen Klick-Listener)
   event.stopPropagation();
   const dropdown = document.getElementById('attendance-dropdown');
+  const toggleButton = document.getElementById('toggle-attendance');
+
+  // Wechsel der Sichtbarkeit
   dropdown.classList.toggle('hidden');
+
+  // Wenn das Dropdown jetzt sichtbar ist, initialisiere Popper.js
+  if (!dropdown.classList.contains('hidden')) {
+    // Falls schon eine Popper-Instanz existiert, zerstören wir sie zuerst
+    if (attendancePopper) {
+      attendancePopper.destroy();
+    }
+    attendancePopper = Popper.createPopper(toggleButton, dropdown, {
+      placement: 'bottom-start', // Öffnet sich unterhalb, linksbündig
+      modifiers: [{
+        name: 'offset',
+        options: {
+          offset: [0, 5] // Kleiner Abstand
+        },
+      }],
+    });
+  } else {
+    // Dropdown wurde geschlossen – zerstöre ggf. die Popper-Instanz
+    if (attendancePopper) {
+      attendancePopper.destroy();
+      attendancePopper = null;
+    }
+  }
 }
 
 /* Öffnet ein Modal anhand seiner ID */
