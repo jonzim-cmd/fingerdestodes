@@ -35,19 +35,19 @@ header h1 {
 @keyframes neonPulse {
   from {
     text-shadow: 
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a,
-      0 0 0px #ff073a;
+      0 0 1px #ff073a,
+      0 0 2px #ff073a,
+      0 0 3px #ff073a,
+      0 0 4px #ff073a,
+      0 0 5px #ff073a;
   }
   to {
     text-shadow: 
-      0 0 10px #ff073a,
-      0 0 20px #ff073a,
-      0 0 30px #ff073a,
-      0 0 40px #ff073a,
-      0 0 50px #ff073a;
+      0 0 2px #ff073a,
+      0 0 4px #ff073a,
+      0 0 5px #ff073a,
+      0 0 6px #ff073a,
+      0 0 7px #ff073a;
   }
 }
 
@@ -88,9 +88,10 @@ header h1 {
 }
 
 /* Hochwertiges Dropdown für Anwesenheit bearbeiten als Overlay */
-/* Hier wurde die feste Breite entfernt und durch width: auto ersetzt.
-   Zusätzlich wird ein Mindestwert (min-width) und ein maximaler Wert (max-width)
-   gesetzt, damit das Dropdown sich dynamisch an den Inhalt anpasst. */
+/* Die feste Breite wurde entfernt und durch dynamische Breitenwerte ersetzt.
+   Damit passt sich das Dropdown an den Inhalt an.
+   Damit das Dropdown bei Vorhandensein der Klasse .hidden ausgeblendet bleibt,
+   definieren wir einen spezifischeren Selektor. */
 #attendance-dropdown {
   position: absolute;
   top: 60px; /* Direkt unter dem Klassen-Dropdown */
@@ -109,10 +110,14 @@ header h1 {
   max-height: 300px;
   overflow-y: auto;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  display: inline-block; /* Damit die Breite nur dem Inhalt angepasst wird */
 }
 
-/* Das Dropdown initial verstecken */
+/* Spezifisch für das Dropdown: Wenn .hidden vorhanden ist, soll es ausgeblendet bleiben */
+#attendance-dropdown.hidden {
+  display: none;
+}
+
+/* Die allgemeine .hidden-Klasse (für alle Elemente) */
 .hidden {
   display: none;
 }
