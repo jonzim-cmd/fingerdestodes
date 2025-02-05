@@ -24,22 +24,22 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 4px;
   text-shadow: 
-    0 0 3px #ff073a,
+    0 0 1px #ff073a,
     0 0 6px #ff073a,
-    0 0 9px #ff073a,
+    0 0 12px #ff073a,
   animation: neonPulse 0.8s ease-in-out infinite alternate;
 }
 
 @keyframes neonPulse {
   from {
     text-shadow: 
-      0 0 5px #ff073a,
+      0 0 1px #ff073a,
       0 0 10px #ff073a,
       0 0 20px #ff073a,
   }
   to {
     text-shadow: 
-      0 0 10px #ff073a,
+      0 0 1px #ff073a,
       0 0 20px #ff073a,
       0 0 30px #ff073a,
   }
