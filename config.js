@@ -222,6 +222,19 @@ function groupAssignment() {
   }
 }
 
+/* Aktualisiert die Überschrift einer Gruppen-Box anhand der aktuellen Anzahl der Listeneinträge */
+function updateGroupHeader(ulElement) {
+  let groupBox = ulElement.closest('.group-box');
+  if (!groupBox) return;
+  // Aus dem data-Attribut wird die Gruppen-Nummer ausgelesen
+  let groupNumber = groupBox.getAttribute('data-group-number');
+  let count = ulElement.children.length;
+  let header = groupBox.querySelector('h3');
+  header.textContent = "Gruppe " + groupNumber + " (" + count + "er)";
+  // Optional: auch das data-group-name Attribut aktualisieren
+  groupBox.setAttribute('data-group-name', header.textContent);
+}
+
 /* Zeigt die Gruppeneinteilung in einem Modal (Raster) an und initialisiert Drag & Drop */
 function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
@@ -231,11 +244,21 @@ function displayGroupResult(groups) {
     // Erstelle eine Gruppen-Box für jede Gruppe
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-box';
-    // Speichere den Gruppennamen als Datenattribut, um später die Drag-&-Drop-Zuordnung zu erleichtern
-    groupDiv.setAttribute('data-group-name', group.groupName);
+    
+    // Extrahiere die Gruppen-Nummer aus dem Gruppennamen (z.B. "Gruppe 5 (3er)")
+    // Alternativ kann man hier auch eine fortlaufende Nummer verwenden.
+    const regex = /^Gruppe\s+(\d+)/i;
+    const match = group.groupName.match(regex);
+    let groupNumber = match ? match[1] : "";
+    // Speichere die Gruppen-Nummer als Datenattribut
+    groupDiv.setAttribute('data-group-number', groupNumber);
+    
+    // Setze initial den Gruppennamen mit der Ausgangsgröße (Länge des Arrays)
+    const initialSize = group.students.length;
+    groupDiv.setAttribute('data-group-name', `Gruppe ${groupNumber} (${initialSize}er)`);
     
     const groupTitle = document.createElement('h3');
-    groupTitle.textContent = group.groupName;
+    groupTitle.textContent = `Gruppe ${groupNumber} (${initialSize}er)`;
     groupDiv.appendChild(groupTitle);
     
     // Erstelle eine Liste, in der die Schülernamen als Listeneinträge angezeigt werden
@@ -286,6 +309,15 @@ function displayGroupResult(groups) {
             }
           });
         }
+        
+        // Aktualisiere die Überschriften der betroffenen Gruppen-Boxen, 
+        // damit sie die aktuelle Anzahl der Schüler widerspiegeln.
+        updateGroupHeader(evt.from);
+        // Falls evt.to und evt.from unterschiedlich sind, aktualisiere auch evt.to
+        if (evt.to !== evt.from) {
+          updateGroupHeader(evt.to);
+        }
+        
         // Debug: Zeige die aktuelle Gruppenzuordnung in der Konsole
         console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
       }
