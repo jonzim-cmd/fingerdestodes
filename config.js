@@ -222,19 +222,23 @@ function groupAssignment() {
   }
 }
 
-/* Zeigt die Gruppeneinteilung in einem Modal (Raster) an */
+/* Zeigt die Gruppeneinteilung in einem Modal (Raster) an und initialisiert Drag & Drop */
 function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
   groupOutput.innerHTML = ''; // Vorherige Ergebnisse löschen
   
   groups.forEach(group => {
+    // Erstelle eine Gruppen-Box für jede Gruppe
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-box';
+    // Speichere den Gruppennamen als Datenattribut, um später die Drag-&-Drop-Zuordnung zu erleichtern
+    groupDiv.setAttribute('data-group-name', group.groupName);
     
     const groupTitle = document.createElement('h3');
     groupTitle.textContent = group.groupName;
     groupDiv.appendChild(groupTitle);
     
+    // Erstelle eine Liste, in der die Schülernamen als Listeneinträge angezeigt werden
     const ul = document.createElement('ul');
     group.students.forEach(studentName => {
       const li = document.createElement('li');
@@ -245,5 +249,46 @@ function displayGroupResult(groups) {
     groupOutput.appendChild(groupDiv);
   });
   
+  // Öffne das Modal, nachdem der Inhalt erzeugt wurde
   openModal('modal-group');
+  
+  // Initialisiere SortableJS für alle Listen in den Gruppen-Boxen
+  // Dadurch können die Listeneinträge (Schülernamen) per Drag & Drop verschoben werden.
+  document.querySelectorAll('.group-box ul').forEach(ul => {
+    new Sortable(ul, {
+      group: 'shared', // Erlaubt das Verschieben zwischen den Listen
+      animation: 150,  // Animationsdauer in ms
+      // Event-Listener, der nach jedem Drop (onEnd) ausgeführt wird
+      onEnd: function(evt) {
+        // Ermittle den übergeordneten Container (group-box) der Ziel-Liste
+        let targetGroupDiv = evt.to.closest('.group-box');
+        let targetGroupName = targetGroupDiv.getAttribute('data-group-name');
+
+        // Aktualisiere das Datenmodell für alle Schüler in der Zielgruppe
+        Array.from(evt.to.children).forEach(li => {
+          let sName = li.textContent;
+          let studentObj = studentData[currentClass].find(s => s.name === sName);
+          if (studentObj) {
+            studentObj.group = targetGroupName;
+          }
+        });
+
+        // Falls der Schüler aus einer anderen Gruppe verschoben wurde,
+        // aktualisiere auch das Datenmodell der Quellgruppe.
+        let sourceGroupDiv = evt.from.closest('.group-box');
+        if (sourceGroupDiv) {
+          let sourceGroupName = sourceGroupDiv.getAttribute('data-group-name');
+          Array.from(evt.from.children).forEach(li => {
+            let sName = li.textContent;
+            let studentObj = studentData[currentClass].find(s => s.name === sName);
+            if (studentObj) {
+              studentObj.group = sourceGroupName;
+            }
+          });
+        }
+        // Debug: Zeige die aktuelle Gruppenzuordnung in der Konsole
+        console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
+      }
+    });
+  });
 }
