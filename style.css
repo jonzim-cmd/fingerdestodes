@@ -24,30 +24,30 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 4px;
   text-shadow: 
-    0 0 2px #ff073a,
-    0 0 4px #ff073a,
-    0 0 6px #ff073a,
-    0 0 8px #ff073a,
-    0 0 10px #ff073a;
+    0 0 3px #fc4e72,
+    0 0 6px #fc4e72,
+    0 0 9px #fc4e72,
+    0 0 12px #fc4e72,
+    0 0 15px #fc4e72;
   animation: neonPulse 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes neonPulse {
   from {
     text-shadow: 
-      0 0 1px #fc4e72,
-      0 0 2px #fc4e72,
-      0 0 3px #fc4e72,
-      0 0 4px #fc4e72,
-      0 0 5px #fc4e72;
+      0 0 0px #ff073a,
+      0 0 0px #ff073a,
+      0 0 0px #ff073a,
+      0 0 0px #ff073a,
+      0 0 0px #ff073a;
   }
   to {
     text-shadow: 
-      0 0 2px #ff073a,
-      0 0 4px #ff073a,
-      0 0 6px #ff073a,
-      0 0 8px #ff073a,
-      0 0 10px #ff073a;
+      0 0 10px #ff073a,
+      0 0 20px #ff073a,
+      0 0 30px #ff073a,
+      0 0 40px #ff073a,
+      0 0 50px #ff073a;
   }
 }
 
@@ -88,6 +88,9 @@ header h1 {
 }
 
 /* Hochwertiges Dropdown für Anwesenheit bearbeiten als Overlay */
+/* Hier wurde die feste Breite entfernt und durch width: auto ersetzt.
+   Zusätzlich wird ein Mindestwert (min-width) und ein maximaler Wert (max-width)
+   gesetzt, damit das Dropdown sich dynamisch an den Inhalt anpasst. */
 #attendance-dropdown {
   position: absolute;
   top: 60px; /* Direkt unter dem Klassen-Dropdown */
@@ -98,12 +101,15 @@ header h1 {
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   border-radius: 8px;
   padding: 15px;
-  width: 300px;
+  width: auto;           /* Breite wird durch den Inhalt bestimmt */
+  min-width: 200px;      /* Mindestbreite, falls der Inhalt sehr kurz ist */
+  max-width: 90%;        /* Maximale Breite, falls der Inhalt sehr lang ist */
   z-index: 10;
   text-align: left;
   max-height: 300px;
   overflow-y: auto;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block; /* Damit die Breite nur dem Inhalt angepasst wird */
 }
 
 /* Das Dropdown initial verstecken */
