@@ -25,10 +25,10 @@ header h1 {
   letter-spacing: 4px;
   text-shadow: 
     0 0 10px #ff0000,
-    2px 2px 0 #ff0000,
     4px 4px 0 #ff0000,
     6px 6px 0 #ff0000,
-    8px 8px 0 #ff0000;
+    8px 8px 0 #ff0000,
+    10px 10px 0 #ff0000;
   animation: titleGlow 2s ease-in-out infinite alternate;
   background: linear-gradient(45deg, #ff0000, #ff6b6b, #ff0000);
   -webkit-background-clip: text;
