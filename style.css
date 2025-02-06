@@ -24,31 +24,21 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 4px;
   text-shadow: 
-    0 0 3px #fc6d8a,
-    0 0 6px #fc6d8a,
-    0 0 9px #fc6d8a,
-    0 0 12px #fc6d8a,
-    0 0 15px #fc6d8a;
-  animation: neonPulse 1.5s ease-in-out infinite alternate;
+    0 0 10px #ff0000,
+    2px 2px 0 #ff0000,
+    4px 4px 0 #ff0000,
+    6px 6px 0 #ff0000,
+    8px 8px 0 #ff0000;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+  background: linear-gradient(45deg, #ff0000, #ff6b6b, #ff0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform-style: preserve-3d;
+  position: relative;
 }
-
-@keyframes neonPulse {
-  from {
-    text-shadow: 
-      0 0 1px #ff073a,
-      0 0 2px #ff073a,
-      0 0 3px #ff073a,
-      0 0 4px #ff073a,
-      0 0 5px #ff073a;
-  }
-  to {
-    text-shadow: 
-      0 0 2px #ff073a,
-      0 0 4px #ff073a,
-      0 0 5px #ff073a,
-      0 0 6px #ff073a,
-      0 0 7px #ff073a;
-  }
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 10px #ff0000; }
+  100% { text-shadow: 0 0 30px #ff0000, 0 0 20px #ff0000; }
 }
 
 /* Controls (Klassenwahl und Anwesenheit) */
