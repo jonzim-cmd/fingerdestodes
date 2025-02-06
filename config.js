@@ -178,6 +178,19 @@ function selectRandomStudent() {
 
   document.getElementById('student-name').textContent = selected.name;
 
+   // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
+  const imagePaths = [
+    'images/random.jpg',
+    'images/random1.jpg',
+    'images/random2.jpg',
+    'images/random3.jpg'
+  ];
+  // Wähle zufällig einen Bildpfad aus
+  const randomImage = imagePaths[Math.floor(Math.random() * imagePaths.length)];
+  
+  // Setze den zufälligen Bildpfad
+  document.getElementById('student-image').src = randomImage;
+
   openModal('modal-selected');
 }
 
