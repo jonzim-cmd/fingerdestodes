@@ -1,3 +1,11 @@
+/* Entfernt die native Darstellung von Formularelementen in WebKit-basierten Browsern */
+select, input, button {
+  -webkit-appearance: none;
+  appearance: none;
+  background: inherit; /* oder z.B.: background-color: #333; */
+  border: none;       /* je nach Bedarf */
+}
+
 /* Grundlegende Styles im Dark Mode */
 body {
   margin: 0;
