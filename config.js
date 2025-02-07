@@ -235,7 +235,16 @@ function groupAssignment() {
   }
   
   if (restSchueler % gruppenGroesse2 !== 0) {
-    alert("Keine sinnvolle Verteilung mit diesen Gruppengrößen möglich!");
+    // Falls keine sinnvolle Verteilung gefunden wurde, werden alternative Vorschläge berechnet.
+    const suggestions = getValidGroupingSuggestions(anzahlAnwesend);
+    if (suggestions.length > 0) {
+      let suggestionText = suggestions.map(sug => {
+        return `Primäre Gruppengröße: ${sug.p} (→ ${sug.primary} Gruppe(n)) und Sekundäre Gruppengröße: ${sug.s} (→ ${sug.secondary} Gruppe(n))`;
+      }).join("\n");
+      alert("Keine sinnvolle Verteilung mit diesen Gruppengrößen möglich!\n\nMögliche Vorschläge:\n" + suggestionText);
+    } else {
+      alert("Keine sinnvolle Verteilung mit diesen Gruppengrößen möglich!");
+    }
     return;
   }
   
@@ -266,6 +275,38 @@ function groupAssignment() {
   } else {
     alert("Es konnten keine Gruppen gebildet werden.");
   }
+}
+
+/* Hilfsfunktion zur Berechnung einer möglichen Gruppeneinteilung nach dem gleichen Algorithmus wie in groupAssignment.
+   Gibt ein Objekt zurück {primaryCount, secondaryCount} oder null, wenn keine sinnvolle Verteilung möglich ist.
+*/
+function calculateGrouping(n, p, s) {
+  let primary = Math.floor(n / p);
+  let remainder = n % p;
+  while (remainder > 0 && remainder % s !== 0 && primary > 0) {
+    primary--;
+    remainder += p;
+  }
+  if (remainder % s === 0 && primary > 0 && (remainder / s) >= 0) {
+    return { primaryCount: primary, secondaryCount: remainder / s };
+  }
+  return null;
+}
+
+/* Hilfsfunktion zur Ermittlung sinnvoller Gruppengrößen-Vorschläge für eine gegebene Gesamtzahl von Schülern */
+function getValidGroupingSuggestions(n) {
+  let suggestions = [];
+  // Durchsuche plausible Werte für primäre und sekundäre Gruppengröße (mindestens 2 bis n)
+  for (let p = 2; p <= n; p++) {
+    for (let s = 2; s <= n; s++) {
+      const result = calculateGrouping(n, p, s);
+      // Nur Vorschläge berücksichtigen, bei denen sowohl primäre als auch sekundäre Gruppen existieren (mindestens 1 Gruppe)
+      if (result && result.primaryCount >= 1 && result.secondaryCount >= 1) {
+        suggestions.push({ p: p, s: s, primary: result.primaryCount, secondary: result.secondaryCount });
+      }
+    }
+  }
+  return suggestions;
 }
 
 /* Aktualisiert die Überschrift einer Gruppen-Box anhand der aktuellen Anzahl der Listeneinträge */
