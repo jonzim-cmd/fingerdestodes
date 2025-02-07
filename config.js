@@ -29,12 +29,10 @@ function initApp() {
   document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('attendance-dropdown');
     const toggleButton = document.getElementById('toggle-attendance');
-    // Falls das Dropdown sichtbar ist und der Klick weder im Dropdown noch auf dem Toggle-Button stattfand:
     if (!dropdown.classList.contains('hidden') &&
         !dropdown.contains(event.target) &&
         !toggleButton.contains(event.target)) {
       dropdown.classList.add('hidden');
-      // Falls eine Popper-Instanz existiert, zerstören
       if (attendancePopper) {
         attendancePopper.destroy();
         attendancePopper = null;
@@ -49,7 +47,6 @@ function loadStudentData() {
     .then(response => response.json())
     .then(data => {
       studentData = {};
-      // Konvertiere reine Namen in Objekte (mit default present: true)
       for (let klasse in data) {
         studentData[klasse] = data[klasse].map(name => ({ name: name, present: true }));
       }
@@ -72,14 +69,12 @@ function populateClassDropdown() {
     dropdown.appendChild(option);
   }
 
-  // Standardmäßig die erste Klasse auswählen
   if (dropdown.options.length > 0) {
     currentClass = dropdown.options[0].value;
     updateAttendanceList();
   }
 }
 
-/* Beim Klassenwechsel */
 document.getElementById('classDropdown').addEventListener('change', function(event) {
   currentClass = event.target.value;
   updateAttendanceList();
@@ -106,7 +101,6 @@ function updateAttendanceList() {
 
     const label = document.createElement('label');
     label.htmlFor = `attend-${index}`;
-    // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
     itemDiv.appendChild(checkbox);
@@ -117,31 +111,26 @@ function updateAttendanceList() {
 
 /* Toggle für Anwesenheits-Dropdown mit Popper.js-Integration */
 function toggleAttendanceDropdown(event) {
-  // Verhindere, dass das Event weitergereicht wird (z.B. an den globalen Klick-Listener)
   event.stopPropagation();
   const dropdown = document.getElementById('attendance-dropdown');
   const toggleButton = document.getElementById('toggle-attendance');
 
-  // Wechsel der Sichtbarkeit
   dropdown.classList.toggle('hidden');
 
-  // Wenn das Dropdown jetzt sichtbar ist, initialisiere Popper.js
   if (!dropdown.classList.contains('hidden')) {
-    // Falls schon eine Popper-Instanz existiert, zerstören wir sie zuerst
     if (attendancePopper) {
       attendancePopper.destroy();
     }
     attendancePopper = Popper.createPopper(toggleButton, dropdown, {
-      placement: 'bottom-start', // Öffnet sich unterhalb, linksbündig
+      placement: 'bottom-start',
       modifiers: [{
         name: 'offset',
         options: {
-          offset: [0, 5] // Kleiner Abstand
+          offset: [0, 5]
         },
       }],
     });
   } else {
-    // Dropdown wurde geschlossen – zerstöre ggf. die Popper-Instanz
     if (attendancePopper) {
       attendancePopper.destroy();
       attendancePopper = null;
@@ -178,17 +167,14 @@ function selectRandomStudent() {
 
   document.getElementById('student-name').textContent = selected.name;
 
-  // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
   const imagePaths = [
     'images/random.jpg',
     'images/random1.jpg',
     'images/random2.jpg',
     'images/random3.jpg'
   ];
-  // Wähle zufällig einen Bildpfad aus
   const randomImage = imagePaths[Math.floor(Math.random() * imagePaths.length)];
   
-  // Setze den zufälligen Bildpfad
   document.getElementById('student-image').src = randomImage;
 
   openModal('modal-selected');
@@ -198,7 +184,6 @@ function selectRandomStudent() {
 function groupAssignment() {
   if (!studentData[currentClass]) return;
   
-  // Array der anwesenden Schülernamen
   const presentStudents = studentData[currentClass].filter(s => s.present).map(s => s.name);
   const anzahlAnwesend = presentStudents.length;
   
@@ -219,7 +204,6 @@ function groupAssignment() {
     return;
   }
   
-  // Mischen (Fisher-Yates)
   const shuffled = presentStudents.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -260,7 +244,6 @@ function groupAssignment() {
     groupNumber++;
   }
   
-  // Wenn Gruppen gefunden wurden, werden diese im Modal angezeigt
   if (groups.length > 0) {
     displayGroupResult(groups);
   } else {
@@ -272,33 +255,27 @@ function groupAssignment() {
 function updateGroupHeader(ulElement) {
   let groupBox = ulElement.closest('.group-box');
   if (!groupBox) return;
-  // Aus dem data-Attribut wird die Gruppen-Nummer ausgelesen
   let groupNumber = groupBox.getAttribute('data-group-number');
   let count = ulElement.children.length;
   let header = groupBox.querySelector('h3');
   header.textContent = "Gruppe " + groupNumber + " (" + count + "er)";
-  // Optional: auch das data-group-name Attribut aktualisieren
   groupBox.setAttribute('data-group-name', header.textContent);
 }
 
 /* Zeigt die Gruppeneinteilung in einem Modal (Raster) an und initialisiert Drag & Drop */
 function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
-  groupOutput.innerHTML = ''; // Vorherige Ergebnisse löschen
+  groupOutput.innerHTML = '';
   
   groups.forEach(group => {
-    // Erstelle eine Gruppen-Box für jede Gruppe
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-box';
     
-    // Extrahiere die Gruppen-Nummer aus dem Gruppennamen (z.B. "Gruppe 5 (3er)")
     const regex = /^Gruppe\s+(\d+)/i;
     const match = group.groupName.match(regex);
     let groupNumber = match ? match[1] : "";
-    // Speichere die Gruppen-Nummer als Datenattribut
     groupDiv.setAttribute('data-group-number', groupNumber);
     
-    // Setze initial den Gruppennamen mit der Ausgangsgröße (Länge des Arrays)
     const initialSize = group.students.length;
     groupDiv.setAttribute('data-group-name', `Gruppe ${groupNumber} (${initialSize}er)`);
     
@@ -306,7 +283,6 @@ function displayGroupResult(groups) {
     groupTitle.textContent = `Gruppe ${groupNumber} (${initialSize}er)`;
     groupDiv.appendChild(groupTitle);
     
-    // Erstelle eine Liste, in der die Schülernamen als Listeneinträge angezeigt werden
     const ul = document.createElement('ul');
     group.students.forEach(studentName => {
       const li = document.createElement('li');
@@ -327,26 +303,21 @@ function displayGroupResult(groups) {
     }
   });
   
-  // Hier wird nicht mehr nach "primary" gesucht, sondern die Größen werden
-  // in absteigender Reihenfolge (von groß nach klein) sortiert.
+  // Sortiere die Gruppengrößen in absteigender Reihenfolge (von groß nach klein)
   const sizes = Object.keys(groupSizeCounts).map(Number).sort((a, b) => b - a);
   const subtitleParts = sizes.map(size => `${groupSizeCounts[size]}x ${size}er`);
   document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
   
-  // Öffne das Modal, nachdem der Inhalt erzeugt wurde
   openModal('modal-group');
   
-  // Initialisiere SortableJS für alle Listen in den Gruppen-Boxen
   document.querySelectorAll('.group-box ul').forEach(ul => {
     new Sortable(ul, {
-      group: 'shared', // Erlaubt das Verschieben zwischen den Listen
-      animation: 150,  // Animationsdauer in ms
+      group: 'shared',
+      animation: 150,
       onEnd: function(evt) {
-        // Ermittle den übergeordneten Container (group-box) der Ziel-Liste
         let targetGroupDiv = evt.to.closest('.group-box');
         let targetGroupName = targetGroupDiv.getAttribute('data-group-name');
 
-        // Aktualisiere das Datenmodell für alle Schüler in der Zielgruppe
         Array.from(evt.to.children).forEach(li => {
           let sName = li.textContent;
           let studentObj = studentData[currentClass].find(s => s.name === sName);
@@ -355,8 +326,6 @@ function displayGroupResult(groups) {
           }
         });
 
-        // Falls der Schüler aus einer anderen Gruppe verschoben wurde,
-        // aktualisiere auch das Datenmodell der Quellgruppe.
         let sourceGroupDiv = evt.from.closest('.group-box');
         if (sourceGroupDiv) {
           let sourceGroupName = sourceGroupDiv.getAttribute('data-group-name');
@@ -369,8 +338,6 @@ function displayGroupResult(groups) {
           });
         }
         
-        // Aktualisiere die Überschriften der betroffenen Gruppen-Boxen,
-        // damit sie die aktuelle Anzahl der Schüler widerspiegeln.
         updateGroupHeader(evt.from);
         if (evt.to !== evt.from) {
           updateGroupHeader(evt.to);
@@ -386,7 +353,7 @@ function displayGroupResult(groups) {
 
 /* Neue Funktion: Aktualisiert den Zusatz in der Überschrift (group-subtitle)
    basierend auf den aktuellen Gruppengrößen in den Gruppen-Boxen, 
-   sortiert von der größten zur kleinsten Gruppengröße. */
+   sortiert von der größten zur kleinsten Gruppengröße, und zeigt diese als Badges an. */
 function updateGroupSubtitle() {
   const groupBoxes = document.querySelectorAll('.group-box');
   const groupSizeCounts = {};
@@ -396,8 +363,11 @@ function updateGroupSubtitle() {
     groupSizeCounts[count] = (groupSizeCounts[count] || 0) + 1;
   });
   
-  // Sortiere die Gruppengrößen in absteigender Reihenfolge (größte zuerst)
   const sizes = Object.keys(groupSizeCounts).map(Number).sort((a, b) => b - a);
-  const subtitleParts = sizes.map(size => `${groupSizeCounts[size]}x ${size}er`);
-  document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
+  let html = '';
+  sizes.forEach(size => {
+    html += `<span class="badge">${size}er: ${groupSizeCounts[size]}</span>`;
+  });
+  
+  document.getElementById('group-subtitle').innerHTML = html;
 }
