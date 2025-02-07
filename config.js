@@ -99,13 +99,13 @@ function updateAttendanceList() {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    checkbox.id = `attend-${index}`;
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    label.htmlFor = `attend-${index}`;
     // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
@@ -178,7 +178,7 @@ function selectRandomStudent() {
 
   document.getElementById('student-name').textContent = selected.name;
 
-   // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
+  // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
   const imagePaths = [
     'images/random.jpg',
     'images/random1.jpg',
@@ -207,65 +207,95 @@ function groupAssignment() {
     return;
   }
   
-  let gruppenGroesse1 = parseInt(prompt("Primäre Gruppengröße (z.B. 3):", "3"), 10);
-  if (isNaN(gruppenGroesse1) || gruppenGroesse1 <= 0 || gruppenGroesse1 > anzahlAnwesend) {
-    alert("Ungültige primäre Gruppengröße!");
-    return;
-  }
-  
-  let gruppenGroesse2 = parseInt(prompt("Sekundäre Gruppengröße (z.B. 2):", "2"), 10);
-  if (isNaN(gruppenGroesse2) || gruppenGroesse2 <= 0 || gruppenGroesse2 > anzahlAnwesend) {
-    alert("Ungültige sekundäre Gruppengröße!");
-    return;
-  }
-  
-  // Mischen (Fisher-Yates)
-  const shuffled = presentStudents.slice();
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  
-  let anzahlGruppen1 = Math.floor(anzahlAnwesend / gruppenGroesse1);
-  let restSchueler = anzahlAnwesend % gruppenGroesse1;
-  
-  while (restSchueler > 0 && (restSchueler % gruppenGroesse2 !== 0) && anzahlGruppen1 > 0) {
-    anzahlGruppen1--;
-    restSchueler += gruppenGroesse1;
-  }
-  
-  if (restSchueler % gruppenGroesse2 !== 0) {
-    alert("Keine sinnvolle Verteilung mit diesen Gruppengrößen möglich!");
-    return;
-  }
-  
-  const anzahlGruppen2 = restSchueler / gruppenGroesse2;
-  const groups = [];
-  let groupNumber = 1;
-  let index = 0;
-  
-  // Primäre Gruppen
-  for (let i = 0; i < anzahlGruppen1; i++) {
-    const groupStudents = shuffled.slice(index, index + gruppenGroesse1);
-    groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse1}er)`, students: groupStudents });
-    index += gruppenGroesse1;
-    groupNumber++;
-  }
-  
-  // Sekundäre Gruppen
-  for (let i = 0; i < anzahlGruppen2; i++) {
-    const groupStudents = shuffled.slice(index, index + gruppenGroesse2);
-    groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse2}er)`, students: groupStudents });
-    index += gruppenGroesse2;
-    groupNumber++;
-  }
-  
-  // Wenn Gruppen gefunden wurden, werden diese im Modal angezeigt
-  if (groups.length > 0) {
-    displayGroupResult(groups);
-  } else {
-    alert("Es konnten keine Gruppen gebildet werden.");
-  }
+  // Neue Promise-basierte Eingabefunktion für Gruppengröße
+  const getGroupSize = (title) => new Promise((resolve) => {
+    const modal = document.getElementById('modal-group-input');
+    const input = document.getElementById('group-size-input');
+    const titleElement = document.getElementById('group-input-title');
+    
+    titleElement.textContent = title;
+    input.value = '';
+    modal.classList.remove('hidden');
+    openModal('modal-group-input');
+    
+    const confirmHandler = () => {
+      const value = parseInt(input.value, 10);
+      modal.classList.add('hidden');
+      closeModal('modal-group-input');
+      resolve(value);
+    };
+    
+    const cancelHandler = () => {
+      modal.classList.add('hidden');
+      closeModal('modal-group-input');
+      resolve(null);
+    };
+    
+    document.getElementById('confirm-group-size').addEventListener('click', confirmHandler, {once: true});
+    document.getElementById('cancel-group-size').addEventListener('click', cancelHandler, {once: true});
+  });
+
+  (async () => {
+    const gruppenGroesse1 = await getGroupSize("Primäre Gruppengröße (z.B. 3):");
+    if (!gruppenGroesse1 || gruppenGroesse1 <= 0 || gruppenGroesse1 > anzahlAnwesend) {
+      alert("Ungültige primäre Gruppengröße!");
+      return;
+    }
+    
+    const gruppenGroesse2 = await getGroupSize("Sekundäre Gruppengröße (z.B. 2):");
+    if (!gruppenGroesse2 || gruppenGroesse2 <= 0 || gruppenGroesse2 > anzahlAnwesend) {
+      alert("Ungültige sekundäre Gruppengröße!");
+      return;
+    }
+    
+    // Mischen (Fisher-Yates)
+    const shuffled = presentStudents.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    
+    let anzahlGruppen1 = Math.floor(anzahlAnwesend / gruppenGroesse1);
+    let restSchueler = anzahlAnwesend % gruppenGroesse1;
+    
+    while (restSchueler > 0 && (restSchueler % gruppenGroesse2 !== 0) && anzahlGruppen1 > 0) {
+      anzahlGruppen1--;
+      restSchueler += gruppenGroesse1;
+    }
+    
+    if (restSchueler % gruppenGroesse2 !== 0) {
+      alert("Keine sinnvolle Verteilung mit diesen Gruppengrößen möglich!");
+      return;
+    }
+    
+    const anzahlGruppen2 = restSchueler / gruppenGroesse2;
+    const groups = [];
+    let groupNumber = 1;
+    let index = 0;
+    
+    // Primäre Gruppen
+    for (let i = 0; i < anzahlGruppen1; i++) {
+      const groupStudents = shuffled.slice(index, index + gruppenGroesse1);
+      groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse1}er)`, students: groupStudents });
+      index += gruppenGroesse1;
+      groupNumber++;
+    }
+    
+    // Sekundäre Gruppen
+    for (let i = 0; i < anzahlGruppen2; i++) {
+      const groupStudents = shuffled.slice(index, index + gruppenGroesse2);
+      groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse2}er)`, students: groupStudents });
+      index += gruppenGroesse2;
+      groupNumber++;
+    }
+    
+    // Wenn Gruppen gefunden wurden, werden diese im Modal angezeigt
+    if (groups.length > 0) {
+      displayGroupResult(groups);
+    } else {
+      alert("Es konnten keine Gruppen gebildet werden.");
+    }
+  })();
 }
 
 /* Aktualisiert die Überschrift einer Gruppen-Box anhand der aktuellen Anzahl der Listeneinträge */
@@ -292,7 +322,6 @@ function displayGroupResult(groups) {
     groupDiv.className = 'group-box';
     
     // Extrahiere die Gruppen-Nummer aus dem Gruppennamen (z.B. "Gruppe 5 (3er)")
-    // Alternativ kann man hier auch eine fortlaufende Nummer verwenden.
     const regex = /^Gruppe\s+(\d+)/i;
     const match = group.groupName.match(regex);
     let groupNumber = match ? match[1] : "";
