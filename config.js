@@ -131,7 +131,7 @@ function toggleAttendanceDropdown(event) {
     if (attendancePopper) {
       attendancePopper.destroy();
     }
-    attendancePopper = Popper.createPopper(toggleButton, dropdown, {
+    attendancePopper = createPopper(toggleButton, dropdown, {
       placement: 'bottom-start', // Öffnet sich unterhalb, linksbündig
       modifiers: [{
         name: 'offset',
