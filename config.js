@@ -99,13 +99,13 @@ function updateAttendanceList() {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = `attend-${index}`;
+    checkbox.id = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = `attend-${index}`;
+    label.htmlFor = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
     // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
