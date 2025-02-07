@@ -361,3 +361,11 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #333 inset !important;
   -webkit-text-fill-color: #fff !important;
 }
+
+/* Untertitel in der Gruppeneinteilung (zusätzliche Anzeige der Gruppenanzahl pro Größe) */
+#group-subtitle {
+  font-size: 0.75em;
+  color: #aaa;
+  margin-left: 10px;
+  font-weight: normal;
+}
