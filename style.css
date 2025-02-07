@@ -322,20 +322,42 @@ a {
 
 /* Stile für Eingabefelder im Dark Mode */
 input, select, textarea {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #555;
+  background-color: #333 !important;
+  color: #fff !important;
+  border: 1px solid #555 !important;
   border-radius: 4px;
   padding: 8px;
   font-size: 16px;
 }
 
-/* Spezifisch für Safari, um sicherzustellen, dass die Eingabefelder dunkel sind */
+/* Safari-spezifische Korrektur */
 @media not all and (min-resolution:.001dpcm) { 
   @supports (-webkit-appearance:none) {
     input, select, textarea {
       -webkit-appearance: none;
       appearance: none;
+      background-color: #333;
+      color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    /* Zusätzlich für Select-Dropdowns */
+    select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg..."); /* Pfeil-Icon */
+      background-repeat: no-repeat;
+      background-position: right 8px center;
     }
   }
+}
+
+/* Hintergrund für modale Eingabefelder explizit setzen */
+.modal-content input {
+  background-color: #333 !important;
+}
+
+/* Korrektur für Autocomplete-Hintergrund */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #333 inset !important;
+  -webkit-text-fill-color: #fff !important;
 }
