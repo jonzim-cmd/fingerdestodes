@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="style.css?v=1.0">
   <!-- SortableJS über CDN einbinden -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  <!-- Popper.js über CDN einbinden (open source, kostenlos, kein Account nötig) -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
 </head>
 <body>
   <div id="app-container">
@@ -20,17 +22,18 @@
       <div id="class-selector">
         <label for="classDropdown">Klasse auswählen:</label>
         <select id="classDropdown"></select>
-        <button id="toggle-attendance" class="small-btn">Anwesenheit bearbeiten</button>
+        <!-- Wrapper für den Toggle-Button und das Dropdown -->
+        <div id="attendance-wrapper" style="position: relative; display: inline-block;">
+          <button id="toggle-attendance" class="small-btn">Anwesenheit bearbeiten</button>
+          <div id="attendance-dropdown" class="dropdown hidden">
+            <div id="attendance-list">
+              <!-- Hier wird die Liste der Schüler mit Checkboxen dynamisch eingefügt -->
+            </div>
+            <button id="close-attendance" class="small-btn">Schließen</button>
+          </div>
+        </div>
       </div>
     </section>
-
-    <!-- Dropdown für Anwesenheit bearbeiten (initial versteckt) -->
-    <div id="attendance-dropdown" class="dropdown hidden">
-      <div id="attendance-list">
-        <!-- Hier wird die Liste der Schüler mit Checkboxen dynamisch eingefügt -->
-      </div>
-      <button id="close-attendance" class="small-btn">Schließen</button>
-    </div>
 
     <!-- Zentrale Aktionstasten -->
     <section id="main-actions">
@@ -74,6 +77,6 @@
   </div>
   
   <!-- Cache-Busting: Versionsnummer an die JS-Datei anhängen -->
-  <script src="config.js?v=2.0"></script>
+  <script src="config.js?v=1.7"></script>
 </body>
 </html>
