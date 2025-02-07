@@ -99,13 +99,13 @@ function updateAttendanceList() {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    checkbox.id = `attend-${index}`;
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    label.htmlFor = `attend-${index}`;
     // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
@@ -317,6 +317,22 @@ function displayGroupResult(groups) {
     groupDiv.appendChild(ul);
     groupOutput.appendChild(groupDiv);
   });
+  
+  // Berechne Gruppengrößen und aktualisiere den Untertitel der Überschrift
+  const groupSizeCounts = {};
+  groups.forEach(group => {
+    const sizeMatch = group.groupName.match(/\((\d+)er\)/);
+    if (sizeMatch) {
+      const size = sizeMatch[1];
+      groupSizeCounts[size] = (groupSizeCounts[size] || 0) + 1;
+    }
+  });
+  
+  const subtitleParts = [];
+  for (const size in groupSizeCounts) {
+    subtitleParts.push(`${groupSizeCounts[size]}x ${size}er`);
+  }
+  document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
   
   // Öffne das Modal, nachdem der Inhalt erzeugt wurde
   openModal('modal-group');
