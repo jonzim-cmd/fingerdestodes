@@ -276,3 +276,46 @@ header h1 {
 .sortable-drag {
   opacity: 0.8;
 }
+
+/* App-Karten */
+#app-cards {
+  margin-bottom: 30px;
+}
+
+.app-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.app-item {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  width: 150px; /* Kleinere Breite für die Karten */
+  transition: transform 0.2s;
+  text-align: center;
+}
+
+.app-item:hover {
+  transform: scale(1.05);
+}
+
+.app-item img {
+  width: 100px; /* Kleinere Bildgröße */
+  height: auto;
+  border-radius: 4px;
+}
+
+.app-item p {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
