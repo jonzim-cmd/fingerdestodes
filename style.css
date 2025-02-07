@@ -261,7 +261,7 @@ header h1 {
 
 .group-box li {
   font-size: clamp(1.0em, 2.0vw, 1.5em);
-  color: #bbb;
+  color: #ffa500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
