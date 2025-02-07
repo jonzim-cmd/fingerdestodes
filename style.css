@@ -247,7 +247,7 @@ header h1 {
 .group-box h3 {
   margin-top: 0;
   font-size: clamp(0.7em, 1.6vw, 1.1em);
-  color: #ffa500;
+  color: #ddd;
   margin-bottom: 10px;
 }
 
@@ -261,7 +261,7 @@ header h1 {
 
 .group-box li {
   font-size: clamp(1.0em, 2.0vw, 1.5em);
-  color: #bbb;
+  color: #ffa500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
