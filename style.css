@@ -294,7 +294,7 @@ header h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  width: 450px; /* Kleinere Breite für die Karten */
+  width: 500px; /* Kleinere Breite für die Karten */
   transition: transform 0.2s;
   text-align: center;
 }
@@ -304,7 +304,7 @@ header h1 {
 }
 
 .app-item img {
-  width: 400px; /* Kleinere Bildgröße */
+  width: 470px; /* Kleinere Bildgröße */
   height: auto;
   border-radius: 4px;
 }
