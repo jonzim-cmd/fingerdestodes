@@ -181,11 +181,6 @@ header h1 {
   animation: fadeIn 0.5s ease;
 }
 
-/* Neuen CSS-Regel: Ermöglicht vertikales Scrollen im Gruppeneinteilungs-Modal */
-#modal-group .modal-content {
-  overflow-y: auto;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
@@ -266,7 +261,7 @@ header h1 {
 
 .group-box li {
   font-size: clamp(1.0em, 2.0vw, 1.5em);
-  color: #bbb;
+  color: #ffa500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
