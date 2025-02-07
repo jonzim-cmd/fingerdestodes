@@ -47,6 +47,7 @@ function loadStudentData() {
     .then(response => response.json())
     .then(data => {
       studentData = {};
+      // Konvertiere reine Namen in Objekte (mit default present: true)
       for (let klasse in data) {
         studentData[klasse] = data[klasse].map(name => ({ name: name, present: true }));
       }
@@ -69,12 +70,14 @@ function populateClassDropdown() {
     dropdown.appendChild(option);
   }
 
+  // Standardmäßig die erste Klasse auswählen
   if (dropdown.options.length > 0) {
     currentClass = dropdown.options[0].value;
     updateAttendanceList();
   }
 }
 
+/* Beim Klassenwechsel */
 document.getElementById('classDropdown').addEventListener('change', function(event) {
   currentClass = event.target.value;
   updateAttendanceList();
@@ -265,7 +268,7 @@ function updateGroupHeader(ulElement) {
 /* Zeigt die Gruppeneinteilung in einem Modal (Raster) an und initialisiert Drag & Drop */
 function displayGroupResult(groups) {
   const groupOutput = document.getElementById('group-output');
-  groupOutput.innerHTML = '';
+  groupOutput.innerHTML = ''; // Vorherige Ergebnisse löschen
   
   groups.forEach(group => {
     const groupDiv = document.createElement('div');
@@ -293,20 +296,8 @@ function displayGroupResult(groups) {
     groupOutput.appendChild(groupDiv);
   });
   
-  // Berechne Gruppengrößen und aktualisiere den Untertitel der Überschrift
-  const groupSizeCounts = {};
-  groups.forEach(group => {
-    const sizeMatch = group.groupName.match(/\((\d+)er\)/);
-    if (sizeMatch) {
-      const size = sizeMatch[1];
-      groupSizeCounts[size] = (groupSizeCounts[size] || 0) + 1;
-    }
-  });
-  
-  // Sortiere die Gruppengrößen in absteigender Reihenfolge (von groß nach klein)
-  const sizes = Object.keys(groupSizeCounts).map(Number).sort((a, b) => b - a);
-  const subtitleParts = sizes.map(size => `${groupSizeCounts[size]}x ${size}er`);
-  document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
+  // Hier wird der Untertitel direkt in Badges dargestellt – auch beim ersten Anzeigen.
+  updateGroupSubtitle();
   
   openModal('modal-group');
   
@@ -344,7 +335,7 @@ function displayGroupResult(groups) {
         }
         
         console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
-        // Aktualisiere den Untertitel in der Überschrift
+        // Aktualisiere den Untertitel in der Überschrift auch nach Verschiebungen
         updateGroupSubtitle();
       }
     });
