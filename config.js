@@ -99,13 +99,13 @@ function updateAttendanceList() {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    checkbox.id = `attend-${index}`;
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
+    label.htmlFor = `attend-${index}`;
     // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
@@ -178,7 +178,7 @@ function selectRandomStudent() {
 
   document.getElementById('student-name').textContent = selected.name;
 
-   // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
+  // Definiere ein Array mit Bildpfaden (füge hier weitere Bilder hinzu, wie du möchtest)
   const imagePaths = [
     'images/random.jpg',
     'images/random1.jpg',
@@ -292,7 +292,6 @@ function displayGroupResult(groups) {
     groupDiv.className = 'group-box';
     
     // Extrahiere die Gruppen-Nummer aus dem Gruppennamen (z.B. "Gruppe 5 (3er)")
-    // Alternativ kann man hier auch eine fortlaufende Nummer verwenden.
     const regex = /^Gruppe\s+(\d+)/i;
     const match = group.groupName.match(regex);
     let groupNumber = match ? match[1] : "";
@@ -318,16 +317,46 @@ function displayGroupResult(groups) {
     groupOutput.appendChild(groupDiv);
   });
   
+  // Berechne Gruppengrößen und aktualisiere den Untertitel der Überschrift
+  const groupSizeCounts = {};
+  groups.forEach(group => {
+    const sizeMatch = group.groupName.match(/\((\d+)er\)/);
+    if (sizeMatch) {
+      const size = sizeMatch[1];
+      groupSizeCounts[size] = (groupSizeCounts[size] || 0) + 1;
+    }
+  });
+  
+  // Bestimme die primäre Gruppengröße (die Größe der ersten Gruppe)
+  let primarySize = null;
+  if (groups.length > 0) {
+    const primaryMatch = groups[0].groupName.match(/\((\d+)er\)/);
+    if (primaryMatch) {
+      primarySize = primaryMatch[1];
+    }
+  }
+  
+  const subtitleParts = [];
+  // Zuerst die primäre Gruppengröße
+  if (primarySize && groupSizeCounts[primarySize] !== undefined) {
+    subtitleParts.push(`${groupSizeCounts[primarySize]}x ${primarySize}er`);
+  }
+  // Anschließend alle weiteren Gruppengrößen
+  for (const size in groupSizeCounts) {
+    if (size !== primarySize) {
+      subtitleParts.push(`${groupSizeCounts[size]}x ${size}er`);
+    }
+  }
+  document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
+  
   // Öffne das Modal, nachdem der Inhalt erzeugt wurde
   openModal('modal-group');
   
   // Initialisiere SortableJS für alle Listen in den Gruppen-Boxen
-  // Dadurch können die Listeneinträge (Schülernamen) per Drag & Drop verschoben werden.
   document.querySelectorAll('.group-box ul').forEach(ul => {
     new Sortable(ul, {
       group: 'shared', // Erlaubt das Verschieben zwischen den Listen
       animation: 150,  // Animationsdauer in ms
-      // Event-Listener, der nach jedem Drop (onEnd) ausgeführt wird
       onEnd: function(evt) {
         // Ermittle den übergeordneten Container (group-box) der Ziel-Liste
         let targetGroupDiv = evt.to.closest('.group-box');
@@ -356,15 +385,13 @@ function displayGroupResult(groups) {
           });
         }
         
-        // Aktualisiere die Überschriften der betroffenen Gruppen-Boxen, 
+        // Aktualisiere die Überschriften der betroffenen Gruppen-Boxen,
         // damit sie die aktuelle Anzahl der Schüler widerspiegeln.
         updateGroupHeader(evt.from);
-        // Falls evt.to und evt.from unterschiedlich sind, aktualisiere auch evt.to
         if (evt.to !== evt.from) {
           updateGroupHeader(evt.to);
         }
         
-        // Debug: Zeige die aktuelle Gruppenzuordnung in der Konsole
         console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
       }
     });
