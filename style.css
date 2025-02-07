@@ -276,35 +276,3 @@ header h1 {
 .sortable-drag {
   opacity: 0.8;
 }
-
-/* Appkarten-Stil für Zufallsschüler und Gruppeneinteilung */
-.app-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-}
-
-.app-item {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  width: 490px; /* 450px Bildbreite + 2×20px Padding */
-  transition: transform 0.2s;
-}
-
-.app-item:hover {
-  transform: scale(1.05);
-}
-
-.app-item img {
-  width: 450px;
-  height: 450px;
-  border-radius: 4px;
-}
-
-.app-item p {
-  margin-top: 10px;
-  font-weight: bold;
-}
