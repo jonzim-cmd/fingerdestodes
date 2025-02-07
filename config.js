@@ -99,13 +99,13 @@ function updateAttendanceList() {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = student.present;
-    checkbox.id = attend-${index};  // Korrektur: Template-Literal mit Backticks
+    checkbox.id = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
     checkbox.addEventListener('change', (e) => {
       student.present = e.target.checked;
     });
 
     const label = document.createElement('label');
-    label.htmlFor = attend-${index};  // Korrektur: Template-Literal mit Backticks
+    label.htmlFor = `attend-${index}`;  // Korrektur: Template-Literal mit Backticks
     // Dynamische Nummerierung: (Index+1) vor dem Namen einfügen
     label.textContent = (index + 1) + ". " + student.name;
 
@@ -247,7 +247,7 @@ function groupAssignment() {
   // Primäre Gruppen
   for (let i = 0; i < anzahlGruppen1; i++) {
     const groupStudents = shuffled.slice(index, index + gruppenGroesse1);
-    groups.push({ groupName: Gruppe ${groupNumber} (${gruppenGroesse1}er), students: groupStudents });
+    groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse1}er)`, students: groupStudents });
     index += gruppenGroesse1;
     groupNumber++;
   }
@@ -255,7 +255,7 @@ function groupAssignment() {
   // Sekundäre Gruppen
   for (let i = 0; i < anzahlGruppen2; i++) {
     const groupStudents = shuffled.slice(index, index + gruppenGroesse2);
-    groups.push({ groupName: Gruppe ${groupNumber} (${gruppenGroesse2}er), students: groupStudents });
+    groups.push({ groupName: `Gruppe ${groupNumber} (${gruppenGroesse2}er)`, students: groupStudents });
     index += gruppenGroesse2;
     groupNumber++;
   }
@@ -301,10 +301,10 @@ function displayGroupResult(groups) {
     
     // Setze initial den Gruppennamen mit der Ausgangsgröße (Länge des Arrays)
     const initialSize = group.students.length;
-    groupDiv.setAttribute('data-group-name', Gruppe ${groupNumber} (${initialSize}er));
+    groupDiv.setAttribute('data-group-name', `Gruppe ${groupNumber} (${initialSize}er)`);
     
     const groupTitle = document.createElement('h3');
-    groupTitle.textContent = Gruppe ${groupNumber} (${initialSize}er);
+    groupTitle.textContent = `Gruppe ${groupNumber} (${initialSize}er)`;
     groupDiv.appendChild(groupTitle);
     
     // Erstelle eine Liste, in der die Schülernamen als Listeneinträge angezeigt werden
