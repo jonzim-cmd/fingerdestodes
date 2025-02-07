@@ -178,7 +178,6 @@ header h1 {
   text-align: center;
   animation: fadeIn 0.5s ease;
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
@@ -194,7 +193,6 @@ header h1 {
   cursor: pointer;
   transition: color 0.2s;
 }
-
 .close:hover {
   color: #fff;
 }
@@ -222,10 +220,10 @@ header h1 {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
   width: 100%;
-  max-height: 70vh; /* Maximale Höhe gesetzt, damit bei zu vielen Gruppen gescrollt werden kann */
   padding: 10px;
   box-sizing: border-box;
-  overflow-y: auto; /* Vertikaler Scrollbalken, wenn der Inhalt die max-height überschreitet */
+  overflow-y: auto;
+  max-height: 70vh; /* Maximale Höhe, damit gescrollt werden kann */
 }
 
 /* Gruppen-Boxen */
@@ -296,17 +294,14 @@ header h1 {
   transition: transform 0.2s;
   text-align: center;
 }
-
 .app-item:hover {
   transform: scale(1.05);
 }
-
 .app-item img {
   width: 470px;
   height: auto;
   border-radius: 4px;
 }
-
 .app-item p {
   margin-top: 10px;
   font-weight: bold;
@@ -329,7 +324,7 @@ input, select, textarea {
 }
 
 /* Safari-spezifische Korrektur */
-@media not all and (min-resolution:.001dpcm) { 
+@media not all and (min-resolution:.001dpcm) {
   @supports (-webkit-appearance:none) {
     input, select, textarea {
       -webkit-appearance: none;
@@ -339,8 +334,6 @@ input, select, textarea {
       padding: 8px;
       border-radius: 4px;
     }
-    
-    /* Zusätzlich für Select-Dropdowns */
     select {
       background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg..."); /* Pfeil-Icon */
       background-repeat: no-repeat;
@@ -360,10 +353,13 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #fff !important;
 }
 
-/* Untertitel in der Gruppeneinteilung */
-#group-subtitle {
+/* Neue CSS-Regeln für die Badges im Group-Subtitle */
+.badge {
+  display: inline-block;
+  background-color: #444;
+  color: #fff;
+  padding: 2px 6px;
+  margin-right: 5px;
+  border-radius: 4px;
   font-size: 0.75em;
-  color: #aaa;
-  margin-left: 10px;
-  font-weight: normal;
 }
