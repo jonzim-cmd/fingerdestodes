@@ -393,7 +393,38 @@ function displayGroupResult(groups) {
         }
         
         console.log("Aktualisierte Gruppen in", currentClass, ":", studentData[currentClass]);
+        // Aktualisiere den Untertitel in der Überschrift
+        updateGroupSubtitle();
       }
     });
   });
+}
+
+/* Neue Funktion: Aktualisiert den Zusatz in der Überschrift (group-subtitle)
+   basierend auf den aktuellen Gruppengrößen in den Gruppen-Boxen */
+function updateGroupSubtitle() {
+  const groupBoxes = document.querySelectorAll('.group-box');
+  const groupSizeCounts = {};
+  groupBoxes.forEach(box => {
+    const ul = box.querySelector('ul');
+    const count = ul.children.length;
+    groupSizeCounts[count] = (groupSizeCounts[count] || 0) + 1;
+  });
+  
+  let primarySize = null;
+  if (groupBoxes.length > 0) {
+    const firstBoxUl = groupBoxes[0].querySelector('ul');
+    primarySize = firstBoxUl.children.length;
+  }
+  
+  const subtitleParts = [];
+  if (primarySize !== null && groupSizeCounts[primarySize] !== undefined) {
+    subtitleParts.push(`${groupSizeCounts[primarySize]}x ${primarySize}er`);
+  }
+  for (const size in groupSizeCounts) {
+    if (parseInt(size, 10) !== primarySize) {
+      subtitleParts.push(`${groupSizeCounts[size]}x ${size}er`);
+    }
+  }
+  document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
 }
