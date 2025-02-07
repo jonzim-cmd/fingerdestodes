@@ -327,26 +327,10 @@ function displayGroupResult(groups) {
     }
   });
   
-  // Bestimme die primäre Gruppengröße (die Größe der ersten Gruppe)
-  let primarySize = null;
-  if (groups.length > 0) {
-    const primaryMatch = groups[0].groupName.match(/\((\d+)er\)/);
-    if (primaryMatch) {
-      primarySize = primaryMatch[1];
-    }
-  }
-  
-  const subtitleParts = [];
-  // Zuerst die primäre Gruppengröße
-  if (primarySize && groupSizeCounts[primarySize] !== undefined) {
-    subtitleParts.push(`${groupSizeCounts[primarySize]}x ${primarySize}er`);
-  }
-  // Anschließend alle weiteren Gruppengrößen
-  for (const size in groupSizeCounts) {
-    if (size !== primarySize) {
-      subtitleParts.push(`${groupSizeCounts[size]}x ${size}er`);
-    }
-  }
+  // Hier wird nicht mehr nach "primary" gesucht, sondern die Größen werden
+  // in absteigender Reihenfolge (von groß nach klein) sortiert.
+  const sizes = Object.keys(groupSizeCounts).map(Number).sort((a, b) => b - a);
+  const subtitleParts = sizes.map(size => `${groupSizeCounts[size]}x ${size}er`);
   document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
   
   // Öffne das Modal, nachdem der Inhalt erzeugt wurde
@@ -401,7 +385,8 @@ function displayGroupResult(groups) {
 }
 
 /* Neue Funktion: Aktualisiert den Zusatz in der Überschrift (group-subtitle)
-   basierend auf den aktuellen Gruppengrößen in den Gruppen-Boxen */
+   basierend auf den aktuellen Gruppengrößen in den Gruppen-Boxen, 
+   sortiert von der größten zur kleinsten Gruppengröße. */
 function updateGroupSubtitle() {
   const groupBoxes = document.querySelectorAll('.group-box');
   const groupSizeCounts = {};
@@ -411,20 +396,8 @@ function updateGroupSubtitle() {
     groupSizeCounts[count] = (groupSizeCounts[count] || 0) + 1;
   });
   
-  let primarySize = null;
-  if (groupBoxes.length > 0) {
-    const firstBoxUl = groupBoxes[0].querySelector('ul');
-    primarySize = firstBoxUl.children.length;
-  }
-  
-  const subtitleParts = [];
-  if (primarySize !== null && groupSizeCounts[primarySize] !== undefined) {
-    subtitleParts.push(`${groupSizeCounts[primarySize]}x ${primarySize}er`);
-  }
-  for (const size in groupSizeCounts) {
-    if (parseInt(size, 10) !== primarySize) {
-      subtitleParts.push(`${groupSizeCounts[size]}x ${size}er`);
-    }
-  }
+  // Sortiere die Gruppengrößen in absteigender Reihenfolge (größte zuerst)
+  const sizes = Object.keys(groupSizeCounts).map(Number).sort((a, b) => b - a);
+  const subtitleParts = sizes.map(size => `${groupSizeCounts[size]}x ${size}er`);
   document.getElementById('group-subtitle').textContent = `(${subtitleParts.join(', ')})`;
 }
